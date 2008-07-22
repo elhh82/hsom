@@ -5,9 +5,9 @@
    * @author Edwin Law Hui Hean
    */
    
-package HSOM.Util;
+package hsom.util;
 
-import HSOM.Core.*;
+import hsom.core.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;

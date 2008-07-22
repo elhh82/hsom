@@ -4,10 +4,10 @@
   * @author Edwin Law Hui Hean
   */
  
-package HSOM.Util;
+package hsom.util;
 
 import java.util.Vector;
-import HSOM.Core.*;
+import hsom.core.*;
 
 public class SOMTrainer implements Runnable{
 	

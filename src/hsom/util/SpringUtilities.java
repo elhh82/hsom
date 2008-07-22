@@ -1,4 +1,4 @@
-package HSOM.Util;
+package hsom.util;
 
 /*
  *
