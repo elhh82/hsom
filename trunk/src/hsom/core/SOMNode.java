@@ -9,7 +9,7 @@
   * @author Edwin Law Hui Hean
   */
  
-package HSOM.Core;
+package hsom.core;
 
 import java.util.Vector;
 import java.util.Random;

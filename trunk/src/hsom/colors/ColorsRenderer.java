@@ -5,10 +5,10 @@
    * @author Edwin Law Hui Hean
    */
    
-package HSOM.Colors;
+package hsom.colors;
 
-import HSOM.Util.*;
-import HSOM.Core.*;
+import hsom.util.*;
+import hsom.core.*;
 import java.awt.Color;
 
 public class ColorsRenderer extends SOMRenderer{

@@ -4,10 +4,10 @@
    * @author Edwin Law Hui Hean
    */
   
-package HSOM.Colors;
+package hsom.colors;
 
-import HSOM.Core.*;
-import HSOM.Util.*;
+import hsom.core.*;
+import hsom.util.*;
 import java.util.Vector;
 import java.io.*;
 

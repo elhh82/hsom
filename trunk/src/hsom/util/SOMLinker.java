@@ -10,11 +10,11 @@
   * @author Edwin Law Hui Hean
   */
   
-package HSOM.Util;
+package hsom.util;
 
 import java.util.Vector;
 import java.io.Serializable;
-import HSOM.Core.SOMVector;
+import hsom.core.SOMVector;
 
 public class SOMLinker extends SOMInput implements Serializable{
 	

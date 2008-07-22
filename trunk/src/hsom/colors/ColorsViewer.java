@@ -4,10 +4,10 @@
    * @author Edwin Law Hui Hean
    */
    
-package HSOM.Colors;
+package hsom.colors;
 
 import javax.swing.*;
-import HSOM.Core.*;
+import hsom.core.*;
 import java.io.*;
 
 public class ColorsViewer extends JFrame{

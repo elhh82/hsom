@@ -4,10 +4,10 @@
   * @author Edwin Law Hui Hean
   */
   
- package HSOM.Colors;
+ package hsom.colors;
  
- import HSOM.Util.SOMInput;
- import HSOM.Core.SOMVector;
+ import hsom.util.SOMInput;
+ import hsom.core.SOMVector;
  import java.util.Vector;
  
  
