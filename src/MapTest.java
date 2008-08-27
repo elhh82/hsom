@@ -1,12 +1,12 @@
 import java.util.*;
+import hsom.core.*;
 
 @SuppressWarnings("unchecked")
 public class MapTest{
 	
     public static void main(String[] args){
-
+        /*
         Map <String, Integer> m = new HashMap<String, Integer>();
-        
         // Initialize frequency table from command line
         for (String a : args) {
                 Integer freq = m.get(a);
@@ -17,7 +17,28 @@ public class MapTest{
         Collections.sort(myArrayList, new MyComparator());
         
         System.out.println(myArrayList.size() + " distinct words:");
-        System.out.println(myArrayList);		
+        System.out.println(myArrayList);
+        */
+        
+        Map <SOMNode, Integer> m = new HashMap<SOMNode, Integer>();
+        Random r = new Random();
+        SOMNode[] node = new SOMNode[5];
+        for(int i=0; i<5; i++){
+            node[i] = new SOMNode(2);
+            node[i].setPos(r.nextInt(2), r.nextInt(2));
+        }
+        
+        for(int i=0; i<10; i++){
+            SOMNode currentNode = node[r.nextInt(5)];
+            Integer freq = m.get(currentNode);
+            m.put(currentNode, (freq == null) ? 1 : freq + 1);            
+        }
+        
+        ArrayList myArrayList=new ArrayList(m.entrySet());
+        Collections.sort(myArrayList, new MyComparator());
+        
+        System.out.println(myArrayList.size() + " distinct nodes:");
+        System.out.println(myArrayList);
 
     }
 	

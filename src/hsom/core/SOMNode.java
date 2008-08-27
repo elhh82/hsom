@@ -130,7 +130,7 @@ public class SOMNode implements Serializable{
     @Override
     public String toString(){
 
-        return xPos + " " + yPos;
+        return "<" + xPos + "," + yPos + ">";
     }
 
     /** Prints out all the weights of this node in human readable form
