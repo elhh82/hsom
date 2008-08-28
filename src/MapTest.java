@@ -25,7 +25,7 @@ public class MapTest{
         SOMNode[] node = new SOMNode[5];
         for(int i=0; i<5; i++){
             node[i] = new SOMNode(2);
-            node[i].setPos(r.nextInt(2), r.nextInt(2));
+            node[i].setPos(r.nextInt(10), r.nextInt(10));
         }
         
         for(int i=0; i<10; i++){
@@ -39,6 +39,14 @@ public class MapTest{
         
         System.out.println(myArrayList.size() + " distinct nodes:");
         System.out.println(myArrayList);
+        
+        Object[] entries = myArrayList.toArray();
+        
+        for (Object thisEntry : entries) {
+            SOMNode getNode = (SOMNode)((Map.Entry)thisEntry).getKey();
+            System.out.println(getNode.toString());
+        }
+        
 
     }
 	
@@ -59,8 +67,8 @@ class MyComparator implements Comparator{
 
         if(value1.compareTo(value2)==0){
 
-            String word1=(String)e1.getKey();
-            String word2=(String)e2.getKey();
+            String word1= e1.getKey().toString();
+            String word2= e2.getKey().toString();
 
             //Sort String in an alphabetical order
             result=word1.compareToIgnoreCase(word2);

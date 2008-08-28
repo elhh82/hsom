@@ -143,6 +143,7 @@ public class SOMTrainer implements Runnable{
         double nbhRadius = getNeighborhoodRadius(iteration);
         SOMNode bmu=null, temp=null;
         inputVector = input.getAdjustedInput(vectorLength);
+        SOMNode[][] inputNodes = input.getNodes(inputVector);
         SOMVector<Float> curInput = null;
         SOMVector<Float> curOutput = new SOMVector<Float>();
         double learningRate = startLearningRate * 
@@ -154,9 +155,10 @@ public class SOMTrainer implements Runnable{
             //get the first part of the input and find its bmu
             curInput = (SOMVector<Float>)inputVector.elementAt(i);			
             bmu = map.getBMU(curInput);
+            //setDownLinks(bmu, inputNodes[i]);
             //store the output for this bmu
-            curOutput.addElement(new Float(bmu.getX()));
-            curOutput.addElement(new Float(bmu.getY()));
+            curOutput.addElement(new Float(bmu.getX()/map.getWidth()));
+            curOutput.addElement(new Float(bmu.getY()/map.getHeight()));
 
             //Once we get the bmu, now we find its neighbourhood
             xStart = (int)(bmu.getX() - nbhRadius - 1);
@@ -192,6 +194,17 @@ public class SOMTrainer implements Runnable{
         iteration++;
         if(iteration%50 == 0) System.out.println("Iteration: " + iteration); 
     }	
+    
+    /**
+     * This function sets the links from the current bmu to the nodes that are
+     * its source.
+     * @param bmu   The node where the links are to be set
+     * @param nodesToLink The nodes to link to
+     */
+    private void setDownLinks(SOMNode bmu, SOMNode[] nodesToLink){
+        
+        
+    }
 	
 	
 		

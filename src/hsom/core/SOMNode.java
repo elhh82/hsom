@@ -11,7 +11,8 @@
  
 package hsom.core;
 
-import java.util.Random;
+import hsom.util.SOMLinkComparator;
+import java.util.*;
 import java.io.*;
 
 
@@ -19,7 +20,13 @@ public class SOMNode implements Serializable{
 	
     //the weights and the X and Y position of this Node
     private SOMVector<Float> weights;
-    private int xPos, yPos; 
+    private int xPos, yPos;
+    private SOMMap map;
+    
+    //the links from the current node to nodes in the upper and lower maps
+    //together with their frequency
+    Map <SOMNode, Integer> upLinks = new HashMap<SOMNode, Integer>();
+    Map <SOMNode, Integer> downLinks = new HashMap<SOMNode, Integer>();
 
     /** The sole constructor, initializes each weight to a random float value
       * between 0 and 1.
@@ -46,6 +53,25 @@ public class SOMNode implements Serializable{
         xPos = x;
         yPos = y;
 
+    }
+    
+    /** Sets the map there this node is located in
+     * @param m The map to set this node to
+     */
+    public void setMap(SOMMap m){
+        
+        map = m;
+        
+    }
+    
+    /**
+     * Returns the map where this node belongs to
+     * @return The map where this node belongs to
+     */
+    public SOMMap getMap(){
+        
+        return map;
+   
     }
 
     /** Returns the X coordinates of the current node in the map
@@ -125,12 +151,38 @@ public class SOMNode implements Serializable{
 
     }
     /** Prints out the x and y coordinates of this node
-     * 
+     * @return the string containing the x and y position of the node
      */
     @Override
     public String toString(){
 
         return "<" + xPos + "," + yPos + ">";
+    }
+    
+    /** Returns the link specified (up or down) sorted in order
+     * or its frequency
+     * @param up    Specifies if we want to return the up links (true) or down
+     *              links (false).
+     * @return      An array of the linked SOMNodes in order of their frequency
+     */
+    @SuppressWarnings("unchecked")
+    public SOMNode[] getLinks(boolean up){
+              
+        ArrayList sortedArrayList = (up) ? new ArrayList(upLinks.entrySet()) :
+                                          new ArrayList(downLinks.entrySet());
+        Collections.sort(sortedArrayList, new SOMLinkComparator());
+        
+        SOMNode[] sortedNodes = new SOMNode[sortedArrayList.size()];
+        
+        for(int i=0; i<sortedArrayList.size(); i++)
+        {
+            sortedNodes[i] =    (SOMNode)((Map.Entry)sortedArrayList.get(i)).
+                                getKey();
+        }
+        
+        
+        return sortedNodes;
+        
     }
 
     /** Prints out all the weights of this node in human readable form
