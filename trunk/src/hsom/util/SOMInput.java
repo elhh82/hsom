@@ -8,6 +8,7 @@ package hsom.util;
 
 import java.util.Vector;
 import hsom.core.SOMVector;
+import hsom.core.SOMNode;
   
 public class SOMInput{
 	
@@ -40,7 +41,7 @@ public class SOMInput{
         return input;	
 
     }
-
+    
     /**
       * Returns the adjusted inputs. The adjustment is done 
       * so that the inputs are broken into smaller sections
@@ -73,12 +74,25 @@ public class SOMInput{
                 }				
             }	
         }
+        //if the lengths are not perfectly divisible, return null
         else{
             return null;
         }		
 
         return output;
 
+    }    
+    
+    /**
+     * This method doesn't do anything besides return null to say that it has no nodes
+     * that correspond to it.
+     * @param inputVector Just any vector
+     * @return Returns null all the time as a normal input does not have nodes
+     *          that correspond to it.
+     */
+     
+     public SOMNode[][] getNodes(Vector inputVector){       
+        return null;
     }
 	
 }

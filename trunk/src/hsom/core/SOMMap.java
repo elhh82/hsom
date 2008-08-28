@@ -35,7 +35,8 @@ public class SOMMap implements Serializable{
 
                     for(int j=0; j<height; j++){				
                             map[i][j] = new SOMNode(numWeights);
-                            map[i][j].setPos(i,j);				
+                            map[i][j].setPos(i,j);
+                            map[i][j].setMap(this);
                     }
 
             }

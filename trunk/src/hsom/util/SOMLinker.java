@@ -15,6 +15,7 @@ package hsom.util;
 import java.util.Vector;
 import java.io.Serializable;
 import hsom.core.SOMVector;
+import hsom.core.SOMNode;
 
 public class SOMLinker extends SOMInput implements Serializable{
 	
@@ -77,6 +78,30 @@ public class SOMLinker extends SOMInput implements Serializable{
         setInput(in);
 
         return super.getAdjustedInput(outputLength);
+    }
+    
+    /**
+     * Returns all the input nodes that correspond to each input set in
+     * a 2 dimensional array of nodes
+     * @param inputVector   The vector containing all the inputs (the coordinates)
+     * @return A 2 dimensional array of nodes
+     */
+    @SuppressWarnings("unchecked")
+    public SOMNode[][] getNodes(Vector inputVector){
+        
+        SOMNode[][] nodes = new SOMNode[inputVector.size()]
+                            [((SOMVector<Float>)inputVector.elementAt(0)).size()];
+        for(int i = 0; i < inputVector.size(); i++){
+            SOMVector<Float> tempVector = (SOMVector<Float>)inputVector.elementAt(i);
+            int sourceNumber = 0;
+            for(int j = 0; j < tempVector.size(); j++){
+                int x = (int)(tempVector.elementAt(j)*sourceSOM[sourceNumber].getMap().getWidth());
+                int y = (int)(tempVector.elementAt(j++)*sourceSOM[sourceNumber].getMap().getWidth());
+                nodes[i][j] = sourceSOM[0].getMap().getNode(x,y);
+                sourceNumber = (sourceNumber == 0) ? 1 : 0;
+            }            
+        }
+        return nodes;
     }
 
 
