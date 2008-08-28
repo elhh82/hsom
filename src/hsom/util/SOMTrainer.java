@@ -155,7 +155,7 @@ public class SOMTrainer implements Runnable{
             //get the first part of the input and find its bmu
             curInput = (SOMVector<Float>)inputVector.elementAt(i);			
             bmu = map.getBMU(curInput);
-            //setDownLinks(bmu, inputNodes[i]);
+            if(inputNodes != null) setDownLinks(bmu, inputNodes[i]);
             //store the output for this bmu
             curOutput.addElement(new Float(bmu.getX()/map.getWidth()));
             curOutput.addElement(new Float(bmu.getY()/map.getHeight()));
