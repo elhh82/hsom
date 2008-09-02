@@ -92,6 +92,7 @@ public class SOMLinker extends SOMInput implements Serializable{
      * @return A 2 dimensional array of nodes
      */
     @SuppressWarnings("unchecked")
+    @Override
     public SOMNode[][] getNodes(Vector inputVector){
         
         SOMNode[][] nodes = new SOMNode[inputVector.size()]
@@ -103,7 +104,7 @@ public class SOMLinker extends SOMInput implements Serializable{
                 int x = (int)(tempVector.elementAt(j)*sourceSOM[sourceNumber].getMap().getWidth());
                 int y = (int)(tempVector.elementAt(j++)*sourceSOM[sourceNumber].getMap().getWidth());
                 nodes[i][j] = sourceSOM[0].getMap().getNode(x,y);
-                sourceNumber = (sourceNumber == 0) ? 1 : 0;
+                if(sourceSOM.length == 2) sourceNumber = (sourceNumber == 0) ? 1 : 0;
             }            
         }
         return nodes;
