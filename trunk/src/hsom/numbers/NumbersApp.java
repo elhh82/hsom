@@ -1,27 +1,32 @@
 
-/** ColorsApp is a demo file to show how the SOM works.
+/** NumberssApp is a demo file to show how the HSOM works.
    *
    * @author Edwin Law Hui Hean
    */
   
-package hsom.colors;
+package hsom.numbers;
 
 import hsom.core.*;
 import hsom.util.*;
 import java.io.*;
 
-public class ColorsApp{
+public class NumbersApp{
 	
-    private SOMMap map;
-    private SOMTrainer trainer;
-
+    private SOMMap bottomMap, topMap;
+    private SOMTrainer bottomTrainer, topTrainer;
+    private NumbersInput input;
+    private SOMLinker linker;
     /** The sole constructor
        */
 
-    public ColorsApp(){
-        map = new SOMMap(40,40,3);
-
-        trainer = new SOMTrainer(map, new ColorsInput());
+    public NumbersApp(){
+        bottomMap = new SOMMap(40,40,3);
+        topMap = new SOMMap(40,40,4);
+        input = new NumbersInput();        
+        bottomTrainer = new SOMTrainer(bottomMap, input);
+        linker = new SOMLinker(bottomTrainer);
+        topTrainer = new SOMTrainer(topMap, linker);
+        linker.setHigherSOM(topTrainer);        
     }
 
 
@@ -30,7 +35,7 @@ public class ColorsApp{
        */
     public void start(int iterations){
 
-        trainer.start(iterations);
+        topTrainer.start(iterations);
 
     }
 
@@ -38,10 +43,18 @@ public class ColorsApp{
        */
     public void printMap(){		
 
+        System.out.println("==========The Bottom Map===========");
+        for(int i=0; i<40; i++){
+            for(int j=0; j<40; j++){
+                System.out.print("Node " + i + "," + j + " : ");
+                System.out.println(bottomMap.getNode(i,j).getVector().toString());
+            }
+        }
+        System.out.println("==========The Top Map=========");
         for(int i=0; i<10; i++){
             for(int j=0; j<10; j++){
                 System.out.print("Node " + i + "," + j + " : ");
-                System.out.println(map.getNode(i,j).getVector().toString());
+                System.out.println(topMap.getNode(i,j).getVector().toString());
             }
         }
 
@@ -57,7 +70,8 @@ public class ColorsApp{
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             ObjectOutputStream oos = new ObjectOutputStream(bos);
 
-            oos.writeObject(map);
+            oos.writeObject(bottomMap);
+            oos.writeObject(topMap);
             oos.close();
 
         }catch(Exception e){};
@@ -68,7 +82,7 @@ public class ColorsApp{
        */
     public static void main(String args[]){
 
-        final ColorsApp app = new ColorsApp();
+        final NumbersApp app = new NumbersApp();
         app.writeMap(args[0]);
         app.start(1000);
         app.writeMap(args[1]);

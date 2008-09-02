@@ -15,7 +15,7 @@ public class SOMTrainer implements Runnable{
     private double startLearningRate = 0.1;
 
     //Number of iteration can be changed to suit needs.
-    private int	maxIterations;
+    private int	maxIterations = 1000;
 
     //These 2 are non adjustable parameters that depends on the SOM map size.
     private double MAP_RADIUS;
@@ -103,9 +103,7 @@ public class SOMTrainer implements Runnable{
       * it will be run.
       * @param runs	The number of times the training will be run
       */
-    public void start(int runs){	
-
-        maxIterations = runs;
+    public void start(int runs){
 
         for(int i=0; i<runs; i++){
             runner = new Thread(this);
@@ -143,14 +141,14 @@ public class SOMTrainer implements Runnable{
         double nbhRadius = getNeighborhoodRadius(iteration);
         SOMNode bmu=null, temp=null;
         inputVector = input.getAdjustedInput(vectorLength);
-        SOMNode[][] inputNodes = input.getNodes(inputVector);
+        int splitParts =  inputVector.size() / input.getInput().size();
+        SOMNode[][] inputNodes = null;//input.getNodes(inputVector);
         SOMVector<Float> curInput = null;
         SOMVector<Float> curOutput = new SOMVector<Float>();
         double learningRate = startLearningRate * 
                                         Math.exp(-(double)iteration/maxIterations);
 
         output = new Vector();
-
         for(int i=0; i<inputVector.size(); i++){
             //get the first part of the input and find its bmu
             curInput = (SOMVector<Float>)inputVector.elementAt(i);			
@@ -185,7 +183,7 @@ public class SOMTrainer implements Runnable{
             //Once the outputs for all the inputs in one input (before adjustment)
             //has been found, we add them into the main output vector and start
             //creating a new output.
-            if(i % vectorLength == vectorLength - 1){
+            if(i % splitParts == splitParts - 1){
                 output.addElement(curOutput);
                 curOutput = new SOMVector<Float>();
             }

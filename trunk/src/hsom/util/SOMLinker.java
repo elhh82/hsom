@@ -28,12 +28,11 @@ public class SOMLinker extends SOMInput implements Serializable{
     /**
       * The 1-1 constructor
       * @param lowerA 		the trainer for the first lower SOM
-      * @param higher		the trainer for the higher SOM
       */	
-    public SOMLinker(SOMTrainer lowerA, SOMTrainer higher){
-        super();	
+    public SOMLinker(SOMTrainer lowerA){
+        super();
+        sourceSOM = new SOMTrainer[1];
         sourceSOM[0] = lowerA;
-        higherSOM = higher;
 
     }
 
@@ -41,13 +40,20 @@ public class SOMLinker extends SOMInput implements Serializable{
       * The 2-1 constructor
       * @param lowerA 		the trainer for the first lower SOM
       * @param lowerB		the trainer for the second lower SOM
-      * @param higher		the trainer for the higher SOM
       */
-    public SOMLinker(SOMTrainer lowerA, SOMTrainer lowerB, SOMTrainer higher){
+    public SOMLinker(SOMTrainer lowerA, SOMTrainer lowerB){
         super();
+        sourceSOM = new SOMTrainer[2];
         sourceSOM[0] = lowerA;
         sourceSOM[1] = lowerB;
-        higherSOM = higher;
+    }
+    
+    /**
+     * Sets the higher SOM
+     * @param higher    the higher SOM
+     */
+    public void setHigherSOM(SOMTrainer higher){
+        higherSOM = higher;        
     }
 
     /**
@@ -76,7 +82,6 @@ public class SOMLinker extends SOMInput implements Serializable{
         //if we have more than one source, join them
         in = (sourceSOM.length > 1) ? joinSources() : sourceSOM[0].getOutput();
         setInput(in);
-
         return super.getAdjustedInput(outputLength);
     }
     
