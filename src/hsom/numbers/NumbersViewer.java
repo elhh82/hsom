@@ -22,8 +22,8 @@ public class NumbersViewer extends JFrame{
     public NumbersViewer(String inFile){
 
         readMap(inFile);
-        topRenderer = new NumbersRenderer(topMap);
-        bottomRenderer = new NumbersRenderer(bottomMap);
+        topRenderer = new NumbersRenderer(topMap,false);
+        bottomRenderer = new NumbersRenderer(bottomMap,true);
 
     }
 
@@ -46,7 +46,7 @@ public class NumbersViewer extends JFrame{
     /** The paint method that draws everything
        */
     private void paint(){
-        /*
+        
         topSOM = new JFrame("The Top SOM");
         topSOM.setResizable(false);
         topSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +54,7 @@ public class NumbersViewer extends JFrame{
         topSOM.pack();		
         topSOM.setSize(new java.awt.Dimension(400, 400));			
         topSOM.setVisible(true);
-        */  
+        
         bottomSOM = new JFrame("The Bottom SOM");
         bottomSOM.setResizable(false);
         bottomSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

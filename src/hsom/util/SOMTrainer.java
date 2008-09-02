@@ -147,7 +147,12 @@ public class SOMTrainer implements Runnable{
         SOMVector<Float> curOutput = new SOMVector<Float>();
         double learningRate = startLearningRate * 
                                         Math.exp(-(double)iteration/maxIterations);
-
+        if(iteration%100 == 0){
+            for(int i=0; i<inputVector.size(); i++){
+                curInput = (SOMVector<Float>)inputVector.elementAt(i);
+                System.out.println(curInput.toString());
+            }            
+        }
         output = new Vector();
         for(int i=0; i<inputVector.size(); i++){
             //get the first part of the input and find its bmu
@@ -157,7 +162,6 @@ public class SOMTrainer implements Runnable{
             //store the output for this bmu
             curOutput.addElement(new Float(bmu.getX()/map.getWidth()));
             curOutput.addElement(new Float(bmu.getY()/map.getHeight()));
-
             //Once we get the bmu, now we find its neighbourhood
             xStart = (int)(bmu.getX() - nbhRadius - 1);
             yStart = (int)(bmu.getY() - nbhRadius - 1);
