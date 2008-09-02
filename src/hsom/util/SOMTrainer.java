@@ -142,7 +142,7 @@ public class SOMTrainer implements Runnable{
         SOMNode bmu=null, temp=null;
         inputVector = input.getAdjustedInput(vectorLength);
         int splitParts =  inputVector.size() / input.getInput().size();
-        SOMNode[][] inputNodes = null;//input.getNodes(inputVector);
+        SOMNode[][] inputNodes = input.getNodes(inputVector);
         SOMVector<Float> curInput = null;
         SOMVector<Float> curOutput = new SOMVector<Float>();
         double learningRate = startLearningRate * 
