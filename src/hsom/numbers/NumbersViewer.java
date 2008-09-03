@@ -64,6 +64,26 @@ public class NumbersViewer extends JFrame{
         bottomSOM.setVisible(true);
 
     }
+    
+    /** Prints the connections in the top SOM
+     * 
+     */
+    private void printSOM(Boolean up){
+        int iLimit = (up) ? topMap.getWidth():bottomMap.getWidth();
+        int jLimit = (up) ? topMap.getHeight():bottomMap.getHeight();
+        for(int i = 0; i < iLimit; i++){
+            for(int j=0; j< jLimit; j++){
+                SOMNode[] Links = (up) ? topMap.getNode(i,j).getLinks(false) :
+                                    bottomMap.getNode(i,j).getLinks(true);
+                System.out.print("Node "+i+","+j+": ");
+                for(SOMNode node: Links){
+                    System.out.print(" "+node.toString());
+                }
+                System.out.println(".");
+            }
+        }
+        
+    }
 
 
     /** The main method
@@ -76,6 +96,8 @@ public class NumbersViewer extends JFrame{
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
                 public void run(){
                         viewer.paint();
+                        viewer.printSOM(true);
+                        viewer.printSOM(false);
                 }
         });		
     }

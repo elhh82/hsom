@@ -178,10 +178,30 @@ public class SOMNode implements Serializable{
         {
             sortedNodes[i] =    (SOMNode)((Map.Entry)sortedArrayList.get(i)).
                                 getKey();
-        }
-        
+        }        
         
         return sortedNodes;
+        
+    }
+    
+    /**
+     * Links this node with another node, either above or below it.
+     * If the link already exists, the frequency is incresed, if not, a new link
+     * is created.
+     * @param up    Determines if we are setting the upLinks or downLinks
+     * @param nodeToLink    The node to link from, from this node
+     */
+    
+    public void setLink(boolean up, SOMNode nodeToLink){
+        
+        if(up){
+            Integer freq = upLinks.get(nodeToLink);
+            upLinks.put(nodeToLink, (freq == null) ? 1 : freq + 1);
+        }
+        else{
+            Integer freq = downLinks.get(nodeToLink);
+            downLinks.put(nodeToLink, (freq == null) ? 1 : freq + 1);            
+        }
         
     }
 

@@ -152,7 +152,7 @@ public class SOMTrainer implements Runnable{
             //get the first part of the input and find its bmu
             curInput = (SOMVector<Float>)inputVector.elementAt(i);			
             bmu = map.getBMU(curInput);
-            if(inputNodes != null) setDownLinks(bmu, inputNodes[i]);
+            if(inputNodes != null) setLinks(bmu, inputNodes[i]);
             //store the output for this bmu
             curOutput.addElement(new Float((float)bmu.getX()/(float)map.getWidth()));
             curOutput.addElement(new Float((float)bmu.getY()/(float)map.getHeight()));
@@ -193,13 +193,15 @@ public class SOMTrainer implements Runnable{
     
     /**
      * This function sets the links from the current bmu to the nodes that are
-     * its source.
+     * its source and also vice versa.
      * @param bmu   The node where the links are to be set
      * @param nodesToLink The nodes to link to
      */
-    private void setDownLinks(SOMNode bmu, SOMNode[] nodesToLink){
-        
-        
+    private void setLinks(SOMNode bmu, SOMNode[] nodesToLink){
+        for (SOMNode node : nodesToLink){
+            bmu.setLink(false, node);
+            node.setLink(true, bmu);
+        }        
     }
 	
 	
