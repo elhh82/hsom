@@ -21,7 +21,7 @@ public class NumbersApp{
 
     public NumbersApp(){
         bottomMap = new SOMMap(40,40,3);
-        topMap = new SOMMap(40,40,4);
+        topMap = new SOMMap(20,20,4);
         input = new NumbersInput();        
         bottomTrainer = new SOMTrainer(bottomMap, input);
         linker = new SOMLinker(bottomTrainer);
@@ -86,5 +86,6 @@ public class NumbersApp{
         app.writeMap(args[0]);
         app.start(1000);
         app.writeMap(args[1]);
+        
     }	
 }
