@@ -1,5 +1,5 @@
 
-/** ColorsRenderer extends SOMRenderer.
+  /**NumbersRenderer extends SOMRenderer.
    * Puts colors into the boxes.
    *
    * @author Edwin Law Hui Hean

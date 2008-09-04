@@ -1,5 +1,5 @@
 
-/** ColorsViewer is the tool to view the SOM.
+/** NumbersViewer is the tool to view the SOM.
    *
    * @author Edwin Law Hui Hean
    */

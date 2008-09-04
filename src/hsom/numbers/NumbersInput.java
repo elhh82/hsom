@@ -1,5 +1,5 @@
 
-/** ColorsInput provides the colors for the Colors demo
+/** NumbersInput provides the numbers for the Numbers demo
   *
   * @author Edwin Law Hui Hean
   */
