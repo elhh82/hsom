@@ -36,4 +36,13 @@ public class Note {
     public String getPitch(){
         return pitch;
     }
+    
+    /**
+     * Returns the string representation of the note
+     * @return the string representation of the note
+     */
+    public String toString(){
+        return "<" + duration + "," + pitch + ">";
+    }
+    
 }

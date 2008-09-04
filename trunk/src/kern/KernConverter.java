@@ -47,7 +47,6 @@ public class KernConverter {
                    if(s.charAt(s.length()-1) == '}') 
                        s = s.substring(0,s.length()-1);
                    addNote(s);
-                   System.out.println(s);
                 }    
                
             }
@@ -57,11 +56,44 @@ public class KernConverter {
         }        
     }
     
+    /**
+     * adds a note to the list of notes
+     * @param input
+     */
     private void addNote(String input){
+        String pitch = "";
+        String duration = "";
+        int durationInt = 0;
         
+        for(char c: input.toCharArray()){
+            if(Character.isLetter(c) || c == '#' || c == '-'){
+                pitch = pitch + c;                
+            }
+            else{
+                duration = duration + c;                
+            }  
+        }
+               
+        if(duration.charAt(duration.length()-1) == '.'){
+            durationInt = Integer.parseInt(duration.substring(0, duration.length()-1));
+            durationInt *= 1.5;
+        }
+        else{
+            durationInt = Integer.parseInt(duration);            
+        }
         
+        noteList.add(new Note(durationInt, pitch));
     }
     
+    /**
+     * checks if the character is a latter
+     * @param c the character to check
+     * @retun True if it is an Alphabet
+     */
+    private boolean isLetter(char c){
+                
+        return Character.isLetter(c);
+    }
     
     /**
      * Read in 2 file names for the input and output files respectively.
@@ -70,7 +102,10 @@ public class KernConverter {
     public static void main(String args[]){
         KernConverter kc = new KernConverter(args[0], args[1]);
         kc.parseFile();
-        //outFile = args[1];        
+        //outFile = args[1]; 
+        for(Iterator<?> it = kc.noteList.iterator(); it.hasNext();){
+            System.out.println(it.next().toString());
+        }
     }
         
 }
