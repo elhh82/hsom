@@ -14,6 +14,8 @@ public class KernConverter {
     private List<Note> noteList = new ArrayList<Note>();
     private String inFile;
     private String outFile;
+    private String keySignature;
+    private String convertedNoteList;
     
     BufferedReader inputStream = null;
     BufferedWriter outputStream = null;
@@ -38,6 +40,11 @@ public class KernConverter {
             
             String s;
             while((s = inputStream.readLine()) != null ){
+                //extract the key
+                if(!s.isEmpty() && s.charAt(0) == '*' && s.charAt(1) == 'k')
+                {
+                    keySignature = s.substring(3, s.length()-1);
+                }
                 //each string is passed into a tokenizer and checked
                 if(!s.isEmpty() && s.charAt(0) != '!' && s.charAt(0) != '*' 
                    && s.charAt(0) != '='){
@@ -63,7 +70,7 @@ public class KernConverter {
     private void addNote(String input){
         String pitch = "";
         String duration = "";
-        int durationInt = 0;
+        float durationFloat = 0;
         
         for(char c: input.toCharArray()){
             if(Character.isLetter(c) || c == '#' || c == '-'){
@@ -75,24 +82,91 @@ public class KernConverter {
         }
                
         if(duration.charAt(duration.length()-1) == '.'){
-            durationInt = Integer.parseInt(duration.substring(0, duration.length()-1));
-            durationInt *= 1.5;
+            durationFloat = Float.parseFloat(duration.substring(0, duration.length()-1));
+            durationFloat /= 1.5;
         }
         else{
-            durationInt = Integer.parseInt(duration);            
+            durationFloat = Float.parseFloat(duration);            
         }
         
-        noteList.add(new Note(durationInt, pitch));
+        noteList.add(new Note(durationFloat, pitch));
     }
     
     /**
-     * checks if the character is a latter
-     * @param c the character to check
-     * @retun True if it is an Alphabet
+     * Converts the note list into the HSOM representation
      */
-    private boolean isLetter(char c){
-                
-        return Character.isLetter(c);
+    private void convert(){
+        //convert the keysignature
+        int key = findKey();
+        
+        //find the shortest note
+        float minDuration = 0;
+        for(Iterator<?> it = noteList.iterator(); it.hasNext();){
+            float currDuration = ((Note)it.next()).getDuration();
+            minDuration = (currDuration > minDuration) ? currDuration : minDuration;
+        }
+        
+        //convert each note 
+        String pitchOutput = "";
+        for(Iterator<?> it = noteList.iterator(); it.hasNext();){
+            String note = ((Note)it.next()).toHSOMPitchNotation(key, (int)minDuration);
+            if(!pitchOutput.isEmpty()) pitchOutput = pitchOutput + "," + note;
+            else pitchOutput = note;
+        }
+        
+        System.out.println(pitchOutput);
+        
+    }
+    
+    /**
+     * Finds the key based on the key signature
+     * @return The note in midi that represents the key
+     */
+    private int findKey(){
+        int numAcc = keySignature.length()/2;
+        boolean sharp = keySignature.charAt(1) == '#';
+        int key = 0;
+        
+        if(sharp){
+            switch (numAcc){ 
+                case 0: key = 60; break;
+                case 1: key = 67; break;
+                case 2: key = 62; break;
+                case 3: key = 69; break;
+                case 4: key = 64; break;
+                case 5: key = 71; break;
+                case 6: key = 66; break;
+                case 7: key = 61; break;
+                default: key = 0; break;
+            }                
+        }
+        else{
+            switch (numAcc){ 
+                case 0: key = 60; break;
+                case 1: key = 65; break;
+                case 2: key = 70; break;
+                case 3: key = 63; break;
+                case 4: key = 68; break;
+                case 5: key = 61; break;
+                case 6: key = 66; break;
+                case 7: key = 71; break;
+                default: key = 0; break;
+            }
+        }
+        System.out.println(key);
+        return key;
+    }
+        
+    /**
+     * Prints out the keySignature and the corresponsing notes
+     */
+    private void print(){
+        System.out.println("Key Signature: " + keySignature);
+        for(Iterator<?> it = noteList.iterator(); it.hasNext();){
+            Note temp = (Note)it.next();
+            System.out.println(temp.toString());
+        }
+        
     }
     
     /**
@@ -102,10 +176,10 @@ public class KernConverter {
     public static void main(String args[]){
         KernConverter kc = new KernConverter(args[0], args[1]);
         kc.parseFile();
+        kc.convert();
+        kc.print();
         //outFile = args[1]; 
-        for(Iterator<?> it = kc.noteList.iterator(); it.hasNext();){
-            System.out.println(it.next().toString());
-        }
+        
     }
         
 }
