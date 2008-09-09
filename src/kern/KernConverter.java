@@ -16,6 +16,7 @@ public class KernConverter {
     private String outFile;
     private String keySignature;
     private String convertedNoteList;
+    private String hsomOutput;
     
     BufferedReader inputStream = null;
     BufferedWriter outputStream = null;
@@ -114,7 +115,7 @@ public class KernConverter {
             else pitchOutput = note;
         }
         
-        System.out.println(pitchOutput);
+        hsomOutput = pitchOutput;
         
     }
     
@@ -153,7 +154,6 @@ public class KernConverter {
                 default: key = 0; break;
             }
         }
-        System.out.println(key);
         return key;
     }
         
@@ -170,15 +170,39 @@ public class KernConverter {
     }
     
     /**
+     * Writes to the out file specified
+     */
+    private void makeOutFile(){
+        try{
+            outputStream = new BufferedWriter(new FileWriter(outFile, true));
+            outputStream.write(inFile + " ");
+            outputStream.write(hsomOutput);
+            outputStream.write('\n');
+            outputStream.flush();
+            outputStream.close();            
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }    
+    
+    /**
      * Read in 2 file names for the input and output files respectively.
      * @param args The file names
      */
     public static void main(String args[]){
-        KernConverter kc = new KernConverter(args[0], args[1]);
-        kc.parseFile();
-        kc.convert();
-        kc.print();
-        //outFile = args[1]; 
+        //KernConverter kc = new KernConverter(args[0], args[1]);
+        //kc.parseFile();
+        //kc.convert();
+        //kc.print();
+        //outFile = args[1];
+        for(int i=0; i<args.length-1; i++){
+            KernConverter kc = new KernConverter(args[i], args[args.length-1]);
+            kc.parseFile();
+            kc.convert();  
+            System.out.println(args[i]);
+            kc.makeOutFile();
+        }
         
     }
         
