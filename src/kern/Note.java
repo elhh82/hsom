@@ -103,9 +103,9 @@ public class Note {
     public String toHSOMPitchNotation(int key, int minDuration){
         String convertedNote = "";
         int length = getLength(minDuration);
-        convertedNote = "" + ((getPitchMidi() == 0) ? 0 : getPitchMidi() - key);
+        convertedNote = "" + ((getPitchMidi() == 0) ? 99 : getPitchMidi() - key);
         for(int i=1; i<length; i++){
-            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? 0 : getPitchMidi() - key);
+            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? 99 : getPitchMidi() - key);
         }
         
         return convertedNote;
