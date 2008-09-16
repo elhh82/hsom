@@ -188,7 +188,7 @@ public class SOMTrainer implements Runnable{
         }
 
         iteration++;
-        if(iteration%50 == 0) System.out.println("Iteration: " + iteration); 
+        if(iteration%1 == 0) System.out.println("Iteration: " + iteration); 
     }	
     
     /**
