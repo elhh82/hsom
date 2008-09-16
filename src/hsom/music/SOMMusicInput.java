@@ -14,9 +14,10 @@
  
  public class SOMMusicInput extends SOMInput{
 	 
-    // The range of our input values for the Music SOM is 
-    // always from 0-35. This is 3 octaves.
-    private static final int RANGE = 35; 
+    // The range of our input values for the Music SOM 
+    private int range = 1; 
+    private int max = 0;
+    private int min = 0;
 
     private BufferedReader inputBuffer;
 
@@ -28,6 +29,7 @@
     public SOMMusicInput(String inFile){
 
         super();
+        findRange(inFile);
         setInput(parseFile(inFile));
 
     }
@@ -46,7 +48,41 @@
         }   		
 
     }
-
+    
+    /**
+     * Finds and sets the maximum value, minimum value and the range of the input notes
+     * @param inFile the file containing the input
+     */
+    private void findRange(String inFile){
+        readFile(inFile);
+        int mx=-999, mn=999;
+        
+        try{
+            String preLineRead = inputBuffer.readLine();
+            String lineRead;
+            String delim = " \t\n\r\f,-";
+            
+            while(preLineRead != null){
+                lineRead = preLineRead.split(" ")[1];
+                StringTokenizer tokenizer = new StringTokenizer(lineRead, delim);
+                //tokenizer.nextToken();
+                while(tokenizer.hasMoreTokens()){
+                    int nextVal = Integer.parseInt(tokenizer.nextToken());
+                    if(nextVal > mx) mx = nextVal;
+                    if(nextVal < mn) mn = nextVal;
+                }
+                preLineRead = inputBuffer.readLine();
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        max = mx;
+        min = mn;
+        range = mx - mn;
+        
+    }
+    
     /** Here we parse the input file and put it into the vectors
       *
       * @param inFile 	the name of the input file
@@ -60,26 +96,28 @@
         readFile(inFile);
 
         try{
-            String lineRead = inputBuffer.readLine();
+            String preLineRead = inputBuffer.readLine();
+            String lineRead;
             String delim = " \t\n\r\f,-";
 
-            while(lineRead != null){ 
-
+            while(preLineRead != null){ 
+                
+                lineRead = preLineRead.split(" ")[1];
                 if(lineRead.length() == 0) break; //in case theres a blank line in the text file
                 SOMVector inputLine = new SOMVector();
                 StringTokenizer tokenizer = new StringTokenizer(lineRead, delim);
 
                 //skip the label of the line of input
-                tokenizer.nextToken();	
+                //tokenizer.nextToken();	
 
                 //add each element in the line into a SOMVector
                 while(tokenizer.hasMoreTokens()){	
-                    float weight = Float.parseFloat(tokenizer.nextToken())/RANGE;										
+                    float weight = (Float.parseFloat(tokenizer.nextToken()) - (float)min)/range;										
                     inputLine.addElement(weight);
                 }
                 //add each SOMVcetor into the main input Vector				
                 in.addElement(inputLine);
-                lineRead = inputBuffer.readLine();					
+                preLineRead = inputBuffer.readLine();					
             }
         }catch(IOException e){
                 System.out.println("There is a problem with the parsing of the input file");
