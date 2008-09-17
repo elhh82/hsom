@@ -62,6 +62,16 @@ public class MusicApp {
         }catch(Exception e){};
     }
     
+    /**
+     * Prints out the input values, used for testing.
+     */
+    public void printInputs(){
+        java.util.Vector inputs = input.getInput();
+        for(int i=0; i<inputs.size(); i++){
+            System.out.println(inputs.get(i));
+        } 
+        
+    }
     
     
     /**
@@ -70,7 +80,8 @@ public class MusicApp {
      */
     public static void main(String args[]){
         final MusicApp app = new MusicApp(args[0]);
-        app.start(1000);
+        //app.printInputs();
+        app.start(50);
         app.writeMap(args[1]);
     }
 
