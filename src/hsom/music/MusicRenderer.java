@@ -30,7 +30,7 @@ public class MusicRenderer extends SOMRenderer{
                 float r = (Float)temp.elementAt(0);
                 float g = (Float)temp.elementAt(1);
                 float b = (Float)temp.elementAt(2);
-                float a = ((Float)temp.elementAt(2)+1)/2;
+                float a = ((Float)temp.elementAt(2)+9)/10;
                 SOMArea[i][j].setBackground(new Color(r,g,b,a));
             }
         }

@@ -73,11 +73,12 @@ public class NumbersViewer extends JFrame{
         int jLimit = (up) ? topMap.getHeight():bottomMap.getHeight();
         for(int i = 0; i < iLimit; i++){
             for(int j=0; j< jLimit; j++){
-                SOMNode[] Links = (up) ? topMap.getNode(i,j).getLinks(false) :
+                System.out.println("lala");
+                String[] Links = (up) ? topMap.getNode(i,j).getLinks(false) :
                                     bottomMap.getNode(i,j).getLinks(true);
                 System.out.print("Node "+i+","+j+": ");
-                for(SOMNode node: Links){
-                    System.out.print(" "+node.toString());
+                for(String node: Links){
+                    System.out.print(" "+node);
                 }
                 System.out.println(".");
             }

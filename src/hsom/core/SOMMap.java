@@ -50,8 +50,23 @@ public class SOMMap implements Serializable{
       */
     public SOMNode getNode(int x, int y){
 
-            return map[x][y];
+        return map[x][y];
 
+    }
+    
+    /**
+     * Gets a node from a map based on its string representation
+     * @param nodeString The string representation of the nodes coordinates
+     * @return the nodes in question
+     */
+    public SOMNode getNode(String nodeString){
+        
+        int x = 0, y = 0;
+        String split[] = nodeString.split(" ,");
+        x = Integer.parseInt(split[1]);
+        y = Integer.parseInt(split[3]);
+        
+        return map[x][y];
     }
 
     /** Returns the width of the map
@@ -59,7 +74,7 @@ public class SOMMap implements Serializable{
       */
     public int getWidth(){
 
-            return map.length;
+        return map.length;
 
     }
 
@@ -68,7 +83,7 @@ public class SOMMap implements Serializable{
       */
     public int getHeight(){
 
-            return map[0].length;
+        return map[0].length;
 
     }
 

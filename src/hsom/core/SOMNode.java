@@ -25,8 +25,8 @@ public class SOMNode implements Serializable{
     
     //the links from the current node to nodes in the upper and lower maps
     //together with their frequency
-    Map <SOMNode, Integer> upLinks = new HashMap<SOMNode, Integer>();
-    Map <SOMNode, Integer> downLinks = new HashMap<SOMNode, Integer>();
+    Map <String, Integer> upLinks = new HashMap<String, Integer>();
+    Map <String, Integer> downLinks = new HashMap<String, Integer>();
 
     /** The sole constructor, initializes each weight to a random float value
       * between 0 and 1.
@@ -166,17 +166,17 @@ public class SOMNode implements Serializable{
      * @return      An array of the linked SOMNodes in order of their frequency
      */
     @SuppressWarnings("unchecked")
-    public SOMNode[] getLinks(boolean up){
+    public String[] getLinks(boolean up){
               
         ArrayList sortedArrayList = (up) ? new ArrayList(upLinks.entrySet()) :
                                           new ArrayList(downLinks.entrySet());
         Collections.sort(sortedArrayList, new SOMLinkComparator());
         
-        SOMNode[] sortedNodes = new SOMNode[sortedArrayList.size()];
+        String[] sortedNodes = new String[sortedArrayList.size()];
         
         for(int i=0; i<sortedArrayList.size(); i++)
         {
-            sortedNodes[i] =    (SOMNode)((Map.Entry)sortedArrayList.get(i)).
+            sortedNodes[i] =    (String)((Map.Entry)sortedArrayList.get(i)).
                                 getKey();
         }        
         
@@ -196,11 +196,11 @@ public class SOMNode implements Serializable{
         
         if(up){
             Integer freq = upLinks.get(nodeToLink);
-            upLinks.put(nodeToLink, (freq == null) ? 1 : freq + 1);
+            upLinks.put(nodeToLink.toString(), (freq == null) ? 1 : freq + 1);
         }
         else{
             Integer freq = downLinks.get(nodeToLink);
-            downLinks.put(nodeToLink, (freq == null) ? 1 : freq + 1);            
+            downLinks.put(nodeToLink.toString(), (freq == null) ? 1 : freq + 1);            
         }
         
     }
