@@ -81,7 +81,7 @@ public class MusicApp {
     public static void main(String args[]){
         final MusicApp app = new MusicApp(args[0]);
         //app.printInputs();
-        app.start(50);
+        app.start(1000);
         app.writeMap(args[1]);
     }
 
