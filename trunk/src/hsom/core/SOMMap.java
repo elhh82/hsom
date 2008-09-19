@@ -18,6 +18,7 @@ public class SOMMap implements Serializable{
 	
     //the array of SOMNodes that is used to create the 2D SOM
     private SOMNode[][] map;
+    private int mapNumber = 0;
 
 
     /** The sole constructor, initializes the map with random
@@ -37,11 +38,28 @@ public class SOMMap implements Serializable{
                             map[i][j] = new SOMNode(numWeights);
                             map[i][j].setPos(i,j);
                             map[i][j].setMap(this);
+                            map[i][j].setMapNumber(mapNumber);
                     }
 
             }
 
     }	
+    
+    /**
+     * Sets the mapNumber for this map if there are multiple maps in the same level
+     * @param num the map number
+     */
+    public void setMapNumber(int num){
+        mapNumber = num;
+    }
+    
+    /**
+     * Returns the map number for this map
+     * @return the map number of this map
+     */
+    public int getMapNumber(){
+        return mapNumber;
+    }
 
     /** Returns the Node at the given point in the map
       * @param	x	The x coordinates of the required node
@@ -62,8 +80,8 @@ public class SOMMap implements Serializable{
     public SOMNode getNode(String nodeString){
         
         int x = 0, y = 0;
-        String split[] = nodeString.split(" ,");
-        x = Integer.parseInt(split[1]);
+        String split[] = nodeString.split(" ,<");
+        x = Integer.parseInt(split[2]);
         y = Integer.parseInt(split[3]);
         
         return map[x][y];
