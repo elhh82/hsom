@@ -22,6 +22,7 @@ public class SOMNode implements Serializable{
     private SOMVector<Float> weights;
     private int xPos, yPos;
     private SOMMap map;
+    private int mapNumber;
     
     //the links from the current node to nodes in the upper and lower maps
     //together with their frequency
@@ -42,6 +43,22 @@ public class SOMNode implements Serializable{
                 weights.addElement(rand.nextFloat());					
         }	
 
+    }
+    
+    /**
+     * Sets the map number for this node, corresponding to the map it belongs to
+     * @param num the map number to set.
+     */
+    public void setMapNumber(int num){
+        mapNumber = num;
+    }
+    
+    /**
+     * Returns the map number for the node corresponding to this map
+     * @return the mapnumber for this node's map
+     */
+    public int getMapNumber(){
+        return mapNumber;
     }
 
     /** Sets the X and Y coordinates in the current node in the map
@@ -192,15 +209,15 @@ public class SOMNode implements Serializable{
      * @param nodeToLink    The node to link from, from this node
      */
     
-    public void setLink(boolean up, SOMNode nodeToLink){
-        
+    public void setLink(boolean up, SOMNode nodeToLink, int i){
+        String nodeString = nodeToLink.getMapNumber() + "," + String.valueOf(i) + " " + nodeToLink.toString(); 
         if(up){
             Integer freq = upLinks.get(nodeToLink);
-            upLinks.put(nodeToLink.toString(), (freq == null) ? 1 : freq + 1);
+            upLinks.put(nodeString, (freq == null) ? 1 : freq + 1);
         }
         else{
             Integer freq = downLinks.get(nodeToLink);
-            downLinks.put(nodeToLink.toString(), (freq == null) ? 1 : freq + 1);            
+            downLinks.put(nodeString, (freq == null) ? 1 : freq + 1);            
         }
         
     }

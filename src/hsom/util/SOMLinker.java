@@ -73,6 +73,7 @@ public class SOMLinker extends SOMInput implements Serializable{
       * 				 	that we want to cut to.
       * @return The vector broken in the parts that are of correct size
       */
+    @Override 
     public Vector getAdjustedInput(int outputLength){
 
         Vector in;

@@ -198,9 +198,11 @@ public class SOMTrainer implements Runnable{
      * @param nodesToLink The nodes to link to
      */
     private void setLinks(SOMNode bmu, SOMNode[] nodesToLink){
+        int i=0;
         for (SOMNode node : nodesToLink){
-            bmu.setLink(false, node);
-            node.setLink(true, bmu);
+            bmu.setLink(false, node, i);            
+            node.setLink(true, bmu, i);
+            i++;
         }        
     }
 	
