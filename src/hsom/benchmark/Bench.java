@@ -21,7 +21,7 @@ public class Bench {
         long elapsed = after - before ;
         System.out.println("Start Time: " + before);
         System.out.println("End Time: " + after);
-        System.out.println("Time Takne: " + elapsed);
+        System.out.println("Time Taken: " + elapsed);
         
     }
     
