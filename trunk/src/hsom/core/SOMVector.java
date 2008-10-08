@@ -42,7 +42,34 @@ public class SOMVector<E> extends Vector<E>{
         }
 
         return distance;
-    }	
+    }
+    
+    /**
+      * Calculates the Euclidean Distance between this node and the 
+      * supplied node. Both SOMVectors should be of the same length.
+      * The difference is calculated for each element of the vectors
+      * and the sum-squared distance for all elements is returned.
+      *
+      * @param node 	the other SOMVector where the distance will be 
+      *			measured to
+      * @param pos      the positions where we are to check
+      * @return		a double value containing the sum squared distance
+      *			of all the elements in the vector
+      */
+    public double euclideanDistancePartial(SOMVector<Float> node, boolean[] pos){
+
+        double distance = 0;
+        double temp = 0;
+
+        for(int i=0; i<size(); i++){
+            if(pos[i]){
+                temp = (Float)elementAt(i) - (Float)node.elementAt(i);	
+                distance += temp*temp;	
+            }
+        }
+
+        return distance;
+    }
 		
 }
 					  
