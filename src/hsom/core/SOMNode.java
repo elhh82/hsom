@@ -207,6 +207,7 @@ public class SOMNode implements Serializable{
      * is created.
      * @param up    Determines if we are setting the upLinks or downLinks
      * @param nodeToLink    The node to link from, from this node
+     * @param i The position of this node, if its the first, second etc in the list
      */
     
     public void setLink(boolean up, SOMNode nodeToLink, int i){

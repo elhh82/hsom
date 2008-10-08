@@ -140,6 +140,42 @@ public class SOMMap implements Serializable{
         return bmu;
 
     }
+    
+    /** Finds the Partial Best Matching Unit for the given input vector
+      * @param	input	The input vector where the BMU is to be searched for
+      * @return 		The SOMNode corresponding to the Best Matching Unit
+      */
+    public SOMNode getPartialBMU(SOMVector<Float> input, boolean[] pos){
+
+        /*Start at map position 0,0 and assume this as the
+         *BMU for now.
+         */		 
+        SOMNode bmu = map[0][0];
+
+        double bmuDist = input.euclideanDistancePartial(bmu.getVector(), pos);
+        double currentDist;
+
+        // Step through the entire matrix and check the euclidean distance
+        // between the input vector and the input node
+        for (int i=0; i<this.getWidth(); i++){
+
+            for (int j=0; j<this.getHeight(); j++){
+                currentDist = input.euclideanDistancePartial(map[i][j].getVector(), pos);
+
+                if (currentDist < bmuDist){
+
+                    /*If the distance from the current node to the input vector
+                     *is less than the distance to our current BMU, then set
+                     *the current input as the new BMU.
+                     */
+                    bmu = map[i][j];
+                    bmuDist = currentDist;					
+                }				
+            }			
+        }		
+        return bmu;
+
+    }
 	
 }	
 		
