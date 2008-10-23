@@ -38,7 +38,7 @@ public class SOMTrainer implements Runnable{
       * The constructor for SOMTrainer for bottom or single SOMs.
       * 
       * @param mapToTrain	The map that will be used by this trainer
-      * @param in			The SOMInput for this trainer. We also pass in
+      * @param in		The SOMInput for this trainer. We also pass in
       *				subclasses on the SOMInput.
       */
     public SOMTrainer(SOMMap mapToTrain, SOMInput in){
@@ -51,8 +51,7 @@ public class SOMTrainer implements Runnable{
       * The constructor for SOMTrainer for higher level SOMs.
       * 
       * @param mapToTrain	The map that will be used by this trainer
-      * @param in			The SOMInput for this trainer. We also pass in
-      *				subclasses on the SOMInput.
+      * @param in		The SOMLinkerfor this trainer. 
       */
 
     public SOMTrainer(SOMMap mapToTrain, SOMLinker in){

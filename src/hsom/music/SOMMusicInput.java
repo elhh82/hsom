@@ -20,7 +20,7 @@
     private int min = 0;
 
     private BufferedReader inputBuffer;
-
+    
     /**
       * The one argument constructor
       *
