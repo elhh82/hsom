@@ -82,6 +82,15 @@ public class SOMMusicPredictionInput extends SOMInput{
         
     }
     
+    /** Returns the range of the original input
+     * 
+     * @return The range of the original input file
+     */
+    public int getRange(){
+        
+        return range;
+    }
+    
     /** Here we parse the input file and put it into the vectors
       *
       * @param inFile 	the name of the input file

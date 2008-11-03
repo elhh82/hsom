@@ -84,6 +84,7 @@ public class SOMPredictor implements Runnable{
         int vectorLength = map.getNode(0,0).getVector().size();
         Vector inputVector = input.getAdjustedInput(vectorLength);
         int splitParts =  inputVector.size() / input.getInput().size();
+        output = new Vector();
         SOMNode bmu = null;
         SOMVector<Float> curInput = null;
         SOMVector<Float> curOutput = new SOMVector<Float>();
@@ -99,7 +100,6 @@ public class SOMPredictor implements Runnable{
             //store the output for this bmu
             curOutput.addElement(new Float((float)bmu.getX()/(float)map.getWidth()));
             curOutput.addElement(new Float((float)bmu.getY()/(float)map.getHeight()));
-            
             //Once the outputs for all the inputs in one input (before adjustment)
             //has been found, we add them into the main output vector and start
             //creating a new output.
