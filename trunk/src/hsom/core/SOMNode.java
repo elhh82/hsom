@@ -211,7 +211,7 @@ public class SOMNode implements Serializable{
      */
     
     public void setLink(boolean up, SOMNode nodeToLink, int i){
-        String nodeString = nodeToLink.getMapNumber() + "," + String.valueOf(i) + " " + nodeToLink.toString(); 
+        String nodeString = nodeToLink.getMapNumber() + "," + String.valueOf(i) + "," + nodeToLink.toString().substring(1,nodeToLink.toString().length()); 
         if(up){
             Integer freq = upLinks.get(nodeToLink);
             upLinks.put(nodeString, (freq == null) ? 1 : freq + 1);
