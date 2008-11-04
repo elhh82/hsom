@@ -12,6 +12,7 @@ import java.io.*;
 public class MusicPredictionApp {
     
     private SOMMap bottomMap, midMap, topMap;
+    private SOMMusicMap bottomMusicMap, midMusicMap, topMusicMap;
     private SOMPredictor bottomPredictor, midPredictor, topPredictor;
     private SOMPredictorLinker midLinker, topLinker;
     private SOMMusicPredictionInput input;
@@ -45,6 +46,9 @@ public class MusicPredictionApp {
             bottomMap = (SOMMap)ois.readObject();
             midMap = (SOMMap)ois.readObject();
             topMap = (SOMMap)ois.readObject();
+            bottomMusicMap = new SOMMusicMap(bottomMap);
+            midMusicMap = new SOMMusicMap(midMap);
+            topMusicMap = new SOMMusicMap(topMap);
             ois.close();			
         }catch(Exception e){
             System.out.println(e);
@@ -99,23 +103,7 @@ public class MusicPredictionApp {
     @SuppressWarnings("unchecked")
     public void getPrediction(){
         java.util.Vector outputs = midPredictor.getOutput();
-        for(int i=0; i<outputs.size(); i++){
-            //first we find the nodes
-            int numNodes = ((SOMVector<Float>)outputs.get(i)).size()/2;
-            System.out.println((SOMVector<Float>)outputs.get(i));
-            for(int j=0; j<numNodes; j++){
-                int x = new Float(((SOMVector<Float>)outputs.get(i)).get(j*2)*midMap.getWidth()).intValue();
-                int y = new Float(((SOMVector<Float>)outputs.get(i)).get(j*2+1)*midMap.getHeight()).intValue();
-                String[] links = midMap.getNode(x,y).getLinks(false);
-                //find the best node from the link
-                SOMNode[] bestNodes = getBestLink(links);
-                
-                //prints out the value of the node
-                bestNodes[0].print(input.getRange());
-                bestNodes[1].print(input.getRange());
-            }
-            
-        }
+        midMusicMap.getPrediction(outputs, input.getRange());
     
     }
     
