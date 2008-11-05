@@ -59,7 +59,7 @@ public class SOMMusicPredictionInput extends SOMInput{
         try{
             String preLineRead = inputBuffer.readLine();
             String lineRead;
-            String delim = " \t\n\r\f,-";
+            String delim = " \t\n\r\f,";
             
             while(preLineRead != null){
                 lineRead = preLineRead.split(" ")[1];
@@ -67,6 +67,7 @@ public class SOMMusicPredictionInput extends SOMInput{
                 //tokenizer.nextToken();
                 while(tokenizer.hasMoreTokens()){
                     int nextVal = Integer.parseInt(tokenizer.nextToken());
+                   
                     if(nextVal > mx) mx = nextVal;
                     if(nextVal < mn) mn = nextVal;
                 }
