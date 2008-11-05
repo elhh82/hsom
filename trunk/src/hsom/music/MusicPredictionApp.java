@@ -102,9 +102,13 @@ public class MusicPredictionApp {
      */    
     @SuppressWarnings("unchecked")
     public void getPrediction(){
-        java.util.Vector outputs = midPredictor.getOutput();
-        midMusicMap.getPrediction(outputs, input.getRange());
-    
+        java.util.Vector outputs = bottomPredictor.getOutput();
+        //String[] predictions = midMusicMap.getPredictedNodes(outputs, bottomMap.getHeight(), bottomMap.getWidth());
+        //for(String predict:predictions){
+        //    System.out.println(predict);
+        //}
+        //System.out.println(input.getRange());
+        bottomMusicMap.getPrediction(outputs, input.getRange());
     }
     
     /**
