@@ -213,12 +213,12 @@ public class SOMNode implements Serializable{
     public void setLink(boolean up, SOMNode nodeToLink, int i){
         String nodeString = nodeToLink.getMapNumber() + "," + String.valueOf(i) + "," + nodeToLink.toString().substring(1,nodeToLink.toString().length()-1); 
         if(up){
-            Integer freq = upLinks.get(nodeToLink);
-            upLinks.put(nodeString, (freq == null) ? 1 : freq + 1);
+            Integer freq = upLinks.get(nodeString);
+            upLinks.put(nodeString, (freq == null) ? 1 : (freq + 1));
         }
         else{
-            Integer freq = downLinks.get(nodeToLink);
-            downLinks.put(nodeString, (freq == null) ? 1 : freq + 1);            
+            Integer freq = downLinks.get(nodeString);
+            downLinks.put(nodeString, (freq == null) ? 1 :(freq + 1));            
         }
         
     }
