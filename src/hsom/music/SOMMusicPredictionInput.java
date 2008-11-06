@@ -107,7 +107,7 @@ public class SOMMusicPredictionInput extends SOMInput{
         try{
             String preLineRead = inputBuffer.readLine();
             String lineRead;
-            String delim = " \t\n\r\f,-";
+            String delim = " \t\n\r\f,";
 
             while(preLineRead != null){ 
                 
