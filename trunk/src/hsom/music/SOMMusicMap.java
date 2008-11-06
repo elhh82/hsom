@@ -31,10 +31,10 @@ public class SOMMusicMap {
             for(int j=0; j<numNodes; j++){
                 int x = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2)*map.getWidth()).intValue();
                 int y = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2+1)*map.getHeight()).intValue();
-                String[] links = map.getNode(x,y).getLinks(false);
-                /*for(int k=0; k<links.length; k++){
+                String[] links = map.getNode(x,y).getLinks(true);
+                for(int k=0; k<links.length; k++){
                     System.out.println(k +": " + links[k]);
-                }*/
+                }
                 String prediction = getPredictedLink(links);
                 //if the prediction is a blank, replaces with the contents of the node
                 if(prediction.compareTo("") == 0){

@@ -102,13 +102,47 @@ public class MusicPredictionApp {
      */    
     @SuppressWarnings("unchecked")
     public void getPrediction(){
-        java.util.Vector outputs = bottomPredictor.getOutput();
+        java.util.Vector outputs = midPredictor.getOutput();
+        for(int i=0; i<outputs.size(); i++){
+            System.out.println(outputs.get(i));
+        }
+        System.out.println("===============");
+        outputs = bottomPredictor.getOutput();
+        for(int i=0; i<outputs.size(); i++){
+            System.out.println(outputs.get(i));
+        }
+        /*
+        for(String link:bottomMap.getNode(19,5).getLinks(true)){
+            System.out.print(link);
+            System.out.print(", ");
+        }
+         */
+        
+        for(int i=0; i<100; i++){
+         
+            for(int j=0; j<100; j++){
+                System.out.println(i + "," + j + ": ");
+                for(String link:bottomMap.getNode(i,j).getLinks(true)){
+                    System.out.print(link);
+                    System.out.print(", ");
+                }
+                System.out.println();
+            }
+        }
+        
         //String[] predictions = midMusicMap.getPredictedNodes(outputs, bottomMap.getHeight(), bottomMap.getWidth());
-        //for(String predict:predictions){
-        //    System.out.println(predict);
-        //}
-        //System.out.println(input.getRange());
-        bottomMusicMap.getPrediction(outputs, input.getRange());
+        //contents of the nodes in question
+        //midMusicMap.getPrediction(outputs, 100);
+        /*for(String predict:predictions){
+            System.out.println(predict);
+        }*/
+        /*System.out.println(bottomMap.getHeight());
+        java.util.Vector outputs = bottomPredictor.getOutput();
+        for(int i=0; i<outputs.size(); i++){
+            System.out.println(outputs.get(i));
+        }
+        bottomMusicMap.getPrediction(outputs, input.getRange());*/
+        //bottomMusicMap.getPrediction(predictions, input.getRange());
     }
     
     /**
