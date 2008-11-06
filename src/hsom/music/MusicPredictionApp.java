@@ -117,18 +117,20 @@ public class MusicPredictionApp {
             System.out.print(", ");
         }
          */
-        
+        int counter = 0;
         for(int i=0; i<100; i++){
          
             for(int j=0; j<100; j++){
                 System.out.println(i + "," + j + ": ");
-                for(String link:bottomMap.getNode(i,j).getLinks(true)){
+                for(String link:bottomMap.getNode(i,j).getLinks(false)){
                     System.out.print(link);
                     System.out.print(", ");
+                    counter++;
                 }
                 System.out.println();
             }
         }
+        System.out.println("count : " + counter);
         
         //String[] predictions = midMusicMap.getPredictedNodes(outputs, bottomMap.getHeight(), bottomMap.getWidth());
         //contents of the nodes in question
