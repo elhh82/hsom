@@ -31,18 +31,22 @@ public class SOMMusicMap {
             for(int j=0; j<numNodes; j++){
                 int x = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2)*map.getWidth()).intValue();
                 int y = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2+1)*map.getHeight()).intValue();
-                String[] links = map.getNode(x,y).getLinks(true);
+                String[] links = map.getNode(x,y).getLinks(false);
+                /*System.out.println(j + ": ");
                 for(int k=0; k<links.length; k++){
                     System.out.println(k +": " + links[k]);
-                }
+                }*/
                 String prediction = getPredictedLink(links);
                 //if the prediction is a blank, replaces with the contents of the node
                 if(prediction.compareTo("") == 0){
-                    
+                    SOMVector<Float> nodeContents = map.getNode(x,y).getVector();
+                    for(int k=0; k<nodeContents.size(); k+=2){
+                        prediction = "" + java.lang.Math.round(nodeContents.get(k) * xRange);
+                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k) * yRange) + ",";
+                    }
+                    prediction = prediction.substring(0,prediction.length()-1);
                 }
-                predictedCoordinates = predictedCoordinates + "," + prediction;
-                
-                
+                predictedCoordinates = predictedCoordinates + "," + prediction;              
             }
             predictedCoordinates = predictedCoordinates.substring(1);
             //System.out.println(predictedCoordinates);
@@ -65,14 +69,35 @@ public class SOMMusicMap {
         if(numLinks == 0) return "";
         Random r = new Random();
         int counter = 0;
+        //count the number of links for chunk 1
         for(int i=0; i<numLinks; i++){
-            if(Integer.parseInt(links[i].split(",")[1]) == 1) break;
-            counter++;
+            if(Integer.parseInt(links[i].split(",")[1]) == 1){
+                counter++;             
+            }
         }
-        String first = links[0];//links[r.nextInt(counter/2)];
-        String second = links[counter];//links[r.nextInt((numLinks - counter)/2) + counter];
-        return first.split(",")[2] + "," + first.split(",")[3] + "," +  
-               second.split(",")[2] + "," + second.split(",")[3];
+        String[] link0 = new String[numLinks-counter];
+        String[] link1 = new String[counter];
+        int counter0 = 0;
+        int counter1 = 0;
+        for(int i=0; i<numLinks; i++){
+            if(Integer.parseInt(links[i].split(",")[1]) == 0){
+                link0[counter0] = links[i];
+                counter0++;
+            }
+            else{
+                link1[counter1] = links[1];
+                counter1++;
+            }
+        }
+        //just double checking here
+        if(counter0 + counter1 != numLinks) System.out.println("Error in counting links");
+        String[] parts0 = link0[r.nextInt(java.lang.Math.round((float)counter0/2))].split(",");
+        String[] parts1 = link1[r.nextInt(java.lang.Math.round((float)counter1/2))].split(",");
+        String output = parts0[2] + "," + parts0[3] +
+                        "," + parts1[2] + "," + parts1[3];
+        
+        return output;
+        
     }  
     
     //obtains the contents of the node based on the node list given
@@ -83,7 +108,7 @@ public class SOMMusicMap {
                 String curOutput = getNodeContents(Integer.parseInt(coordinates[j]),
                                                    Integer.parseInt(coordinates[j+1]),
                                                    range); 
-                //System.out.println(curOutput);
+                System.out.println(curOutput);
             }
             
         }

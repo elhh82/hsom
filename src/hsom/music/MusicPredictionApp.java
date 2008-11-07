@@ -102,37 +102,25 @@ public class MusicPredictionApp {
      */    
     @SuppressWarnings("unchecked")
     public void getPrediction(){
+        /*
+        //the midmap output and contents 
         java.util.Vector outputs = midPredictor.getOutput();
         for(int i=0; i<outputs.size(); i++){
             System.out.println(outputs.get(i));
         }
+        midMusicMap.getPrediction(outputs, 100);
         System.out.println("===============");
+        //the bottommap output and contents
         outputs = bottomPredictor.getOutput();
         for(int i=0; i<outputs.size(); i++){
             System.out.println(outputs.get(i));
         }
-        /*
-        for(String link:bottomMap.getNode(19,5).getLinks(true)){
-            System.out.print(link);
-            System.out.print(", ");
-        }
-         */
-        int counter = 0;
-        for(int i=0; i<100; i++){
-         
-            for(int j=0; j<100; j++){
-                System.out.println(i + "," + j + ": ");
-                for(String link:bottomMap.getNode(i,j).getLinks(false)){
-                    System.out.print(link);
-                    System.out.print(", ");
-                    counter++;
-                }
-                System.out.println();
-            }
-        }
-        System.out.println("count : " + counter);
+        bottomMusicMap.getPrediction(outputs, input.getRange());
+        */
         
-        //String[] predictions = midMusicMap.getPredictedNodes(outputs, bottomMap.getHeight(), bottomMap.getWidth());
+        java.util.Vector outputs = midPredictor.getOutput();
+        String[] predictions = midMusicMap.getPredictedNodes(outputs, bottomMap.getHeight(), bottomMap.getWidth());
+        System.out.println("===============");
         //contents of the nodes in question
         //midMusicMap.getPrediction(outputs, 100);
         /*for(String predict:predictions){
@@ -144,7 +132,7 @@ public class MusicPredictionApp {
             System.out.println(outputs.get(i));
         }
         bottomMusicMap.getPrediction(outputs, input.getRange());*/
-        //bottomMusicMap.getPrediction(predictions, input.getRange());
+        bottomMusicMap.getPrediction(predictions, input.getRange());
     }
     
     /**
