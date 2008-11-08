@@ -117,10 +117,18 @@ public class MusicPredictionApp {
         }
         bottomMusicMap.getPrediction(outputs, input.getRange());
         */
-        
-        java.util.Vector outputs = midPredictor.getOutput();
-        String[] predictions = midMusicMap.getPredictedNodes(outputs, bottomMap.getHeight(), bottomMap.getWidth());
-        System.out.println("===============");
+        //predict from top
+        System.out.println("top");
+        java.util.Vector outputs = topPredictor.getOutput();
+        String[] topPrediction = topMusicMap.getPredictedNodes(outputs, midMap.getHeight(), midMap.getWidth());
+        String[] predictions = midMusicMap.getPredictedNodes(topPrediction, bottomMap.getHeight(), bottomMap.getWidth());
+        bottomMusicMap.getPrediction(predictions, input.getRange());
+        //predict from middle
+        System.out.println("Middle");
+        java.util.Vector midoutputs = midPredictor.getOutput();
+        String[] midpredictions = midMusicMap.getPredictedNodes(midoutputs, bottomMap.getHeight(), bottomMap.getWidth());
+        bottomMusicMap.getPrediction(midpredictions, input.getRange());
+        //System.out.println("===============");
         //contents of the nodes in question
         //midMusicMap.getPrediction(outputs, 100);
         /*for(String predict:predictions){
@@ -132,7 +140,7 @@ public class MusicPredictionApp {
             System.out.println(outputs.get(i));
         }
         bottomMusicMap.getPrediction(outputs, input.getRange());*/
-        bottomMusicMap.getPrediction(predictions, input.getRange());
+        //bottomMusicMap.getPrediction(predictions, input.getRange());
     }
     
     /**
