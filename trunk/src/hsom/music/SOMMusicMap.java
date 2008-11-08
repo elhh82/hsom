@@ -41,7 +41,7 @@ public class SOMMusicMap {
                 if(prediction.compareTo("") == 0){
                     SOMVector<Float> nodeContents = map.getNode(x,y).getVector();
                     for(int k=0; k<nodeContents.size(); k+=2){
-                        prediction = "" + java.lang.Math.round(nodeContents.get(k) * xRange);
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k) * xRange);
                         prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k) * yRange) + ",";
                     }
                     prediction = prediction.substring(0,prediction.length()-1);
@@ -57,9 +57,33 @@ public class SOMMusicMap {
     }
     
     //obtains a predicted downlink using a set of downlinks predicted from the higher som
-    public String[] getPredictedNodes(String[] predictedNodes){
-        
-        return null;
+    public String[] getPredictedNodes(String[] nodeList, int xRange, int yRange){
+        String[] output = new String[nodeList.length];
+        for(int i=0; i<nodeList.length; i++){
+            String predictedCoordinates = "";
+            String[] coordinates = nodeList[i].split(",");
+            for(int j=0; j<coordinates.length; j+=2){
+                int x = Integer.parseInt(coordinates[j]);
+                int y = Integer.parseInt(coordinates[j+1]);
+                String[] links = map.getNode(x,y).getLinks(false);
+                String prediction = getPredictedLink(links);
+                //if the prediction is a blank, replaces with the contents of the node
+                if(prediction.compareTo("") == 0){
+                    System.out.println("waaaaaaaa");
+                    SOMVector<Float> nodeContents = map.getNode(x,y).getVector();
+                    for(int k=0; k<nodeContents.size(); k+=2){
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k) * xRange);
+                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k) * yRange) + ",";
+                    }
+                    prediction = prediction.substring(0,prediction.length()-1);
+                }
+                predictedCoordinates = predictedCoordinates + "," + prediction;
+            }
+            predictedCoordinates = predictedCoordinates.substring(1);
+            //System.out.println(predictedCoordinates);
+            output[i] = predictedCoordinates;
+        }
+        return output;
     }
     
     //does the actual prediction

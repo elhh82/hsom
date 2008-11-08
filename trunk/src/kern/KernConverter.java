@@ -102,11 +102,12 @@ public class KernConverter {
         
         //find the shortest note
         float minDuration = 0;
-        for(Iterator<?> it = noteList.iterator(); it.hasNext();){
+        /*for(Iterator<?> it = noteList.iterator(); it.hasNext();){
             float currDuration = ((Note)it.next()).getDuration();
             minDuration = (currDuration > minDuration) ? currDuration : minDuration;
-        }
-        
+        }*/
+        //we force minDuration to 16
+        minDuration = 16;
         //convert each note 
         String pitchOutput = "";
         for(Iterator<?> it = noteList.iterator(); it.hasNext();){
@@ -125,7 +126,8 @@ public class KernConverter {
      */
     private int findKey(){
         int numAcc = keySignature.length()/2;
-        boolean sharp = keySignature.charAt(1) == '#';
+        boolean sharp = true;
+        if(numAcc > 0){sharp = keySignature.charAt(1) == '#';}
         int key = 0;
         
         if(sharp){
