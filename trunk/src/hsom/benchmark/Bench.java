@@ -6,15 +6,13 @@
 
 package hsom.benchmark;
 
-import hsom.core.*;
-import hsom.util.*;
 import hsom.music.*;
 
 
 public class Bench {    
     
     public static void main(String args[]){
-        final MusicApp bench = new MusicApp(args[0]);
+        final MusicApp bench = new MusicApp(args[0], args[1]);
         long before = System.currentTimeMillis() ;
         bench.start(Integer.parseInt(args[1]));
         long after = System.currentTimeMillis() ;

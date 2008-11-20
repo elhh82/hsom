@@ -15,8 +15,9 @@ public class KernConverter {
     private String inFile;
     private String outFile;
     private String keySignature;
-    private String convertedNoteList;
+    //private String convertedNoteList;
     private String hsomOutput;
+    private String durationOutput;
     
     BufferedReader inputStream = null;
     BufferedWriter outputStream = null;
@@ -121,6 +122,20 @@ public class KernConverter {
     }
     
     /**
+     * Does the same as convert() but for the duration
+     */
+    private void durationConvert(){
+        float minDuration = 16;
+        String output = "";
+        for(Iterator<?> it = noteList.iterator(); it.hasNext();){
+            String note = ((Note)it.next()).toHSOMDurationNotation((int)minDuration);
+            if(!output.isEmpty()) output = output + "," + note;
+            else output = note;
+        }
+        durationOutput = output;
+    }
+    
+    /**
      * Finds the key based on the key signature
      * @return The note in midi that represents the key
      */
@@ -176,12 +191,20 @@ public class KernConverter {
      */
     private void makeOutFile(){
         try{
-            outputStream = new BufferedWriter(new FileWriter(outFile, true));
+            //write the pitch outputs
+            outputStream = new BufferedWriter(new FileWriter(outFile+"Pitch.txt", true));
             outputStream.write(inFile + " ");
             outputStream.write(hsomOutput);
             outputStream.write('\n');
             outputStream.flush();
-            outputStream.close();            
+            outputStream.close(); 
+            //write the duration outputs
+            outputStream = new BufferedWriter(new FileWriter(outFile+"Duration.txt", true));
+            outputStream.write(inFile + " ");
+            outputStream.write(durationOutput);
+            outputStream.write('\n');
+            outputStream.flush();
+            outputStream.close(); 
         }
         catch(Exception e){
             System.out.println(e);
@@ -201,8 +224,9 @@ public class KernConverter {
         for(int i=0; i<args.length-1; i++){
             KernConverter kc = new KernConverter(args[i], args[args.length-1]);
             kc.parseFile();
-            kc.convert();  
-            System.out.println(args[i]);
+            kc.convert(); 
+            kc.durationConvert();
+            //System.out.println(args[i]);
             kc.makeOutFile();
         }
         

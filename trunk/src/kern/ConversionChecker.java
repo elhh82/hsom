@@ -31,7 +31,7 @@ public class ConversionChecker {
     }
     
     /**
-     * Checks and print if the file length is divisible by 4 and 16
+     * Checks and print if the file length is divisible by 8 and 16
      */
     public void check(Boolean cleanup){
         try{
@@ -47,15 +47,15 @@ public class ConversionChecker {
                 System.out.print(sr[0] + ": ");
                 int length = sr[1].split(",").length;
                 System.out.print(length + "      ");
-                String divBy4 = (length % 4 == 0) ? "Yes" : "No";
-                String divBy8 = (length % 8 == 0) ? "Yes" : "No";
-                System.out.println('\t' + divBy4 + '\t'+'\t' + divBy8);
-                boolean d4 = (length % 4 == 0) ? true : false;
-                boolean d8 = (length % 8 == 0) ? true : false;                
+                String divBy8 = (length % 4 == 0) ? "Yes" : "No";
+                String divBy16 = (length % 8 == 0) ? "Yes" : "No";
+                System.out.println('\t' + divBy8 + '\t'+'\t' + divBy16);
+                boolean d8 = (length % 4 == 0) ? true : false;
+                boolean d16 = (length % 8 == 0) ? true : false;                
                 max = (max < getMax(s)) ? getMax(s) : max;
                 min = (min > getMin(s)) ? getMin(s) : min;
                 if(cleanup){
-                    if(d4 && d8){
+                    if(d8 && d16){
                         goodOutputStream.write(s);
                         goodOutputStream.write('\n');
                     }
@@ -84,7 +84,7 @@ public class ConversionChecker {
      * The file name to output the broken inputs to
      * @param file breaks the inputs into string of 16.
      */
-    public void breakInto16(String file){
+    public void breakInto32(String file){
         try{
             BufferedWriter output = new BufferedWriter(new FileWriter(file));
             BufferedReader input = new BufferedReader(new FileReader(cleanOutput));
@@ -188,7 +188,7 @@ public class ConversionChecker {
         }
         cc.check(args.length >= 3);
         if(args.length >= 4){
-            cc.breakInto16(args[3]);
+            cc.breakInto32(args[3]);
         }
         if(args.length >= 5){
             cc.removeRests(args[3],args[4]);
