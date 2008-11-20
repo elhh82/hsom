@@ -123,11 +123,17 @@ public class MusicPredictionApp {
         String[] topPrediction = topMusicMap.getPredictedNodes(outputs, midMap.getHeight(), midMap.getWidth());
         String[] predictions = midMusicMap.getPredictedNodes(topPrediction, bottomMap.getHeight(), bottomMap.getWidth());
         bottomMusicMap.getPrediction(predictions, input.getRange());
+        
         //predict from middle
         System.out.println("Middle");
         java.util.Vector midoutputs = midPredictor.getOutput();
         String[] midpredictions = midMusicMap.getPredictedNodes(midoutputs, bottomMap.getHeight(), bottomMap.getWidth());
         bottomMusicMap.getPrediction(midpredictions, input.getRange());
+        
+        //predict from boyyom
+        System.out.println("Bottom");
+        java.util.Vector bottomoutputs = bottomPredictor.getOutput();
+        bottomMusicMap.getPrediction(bottomoutputs, input.getRange());
         //System.out.println("===============");
         //contents of the nodes in question
         //midMusicMap.getPrediction(outputs, 100);

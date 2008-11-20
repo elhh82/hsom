@@ -11,22 +11,25 @@ import java.io.*;
 
 public class MusicApp {
     
-    private SOMMap bottomMap, midMap, topMap;
-    private SOMTrainer bottomTrainer, midTrainer, topTrainer;
+    private SOMMap pitchMap, durationMap, midMap, topMap;
+    private SOMTrainer pitchTrainer, durationTrainer, midTrainer, topTrainer;
     private SOMLinker midLinker, topLinker;
-    private SOMMusicInput input;
+    private SOMMusicInput inputPitch, inputDuration;
     
     /**
      * The sole constructor
      * @param in The name of the input file
      */
-    public MusicApp(String in){
-        input = new SOMMusicInput(in);
-        bottomMap = new SOMMap(100,100,4);
+    public MusicApp(String pitch, String duration){
+        inputPitch = new SOMMusicInput(pitch);
+        inputDuration = new SOMMusicInput(duration);
+        pitchMap = new SOMMap(100,100,8);
+        durationMap = new SOMMap(60,60,4);
         midMap = new SOMMap(80,80,4);
         topMap = new SOMMap(60,60,4);
-        bottomTrainer = new SOMTrainer(bottomMap, input);
-        midLinker = new SOMLinker(bottomTrainer);
+        pitchTrainer = new SOMTrainer(pitchMap, inputPitch);
+        durationTrainer = new SOMTrainer(durationMap, inputDuration);
+        midLinker = new SOMLinker(pitchTrainer, durationTrainer);
         midTrainer = new SOMTrainer(midMap, midLinker);
         midLinker.setHigherSOM(midTrainer);
         topLinker = new SOMLinker(midTrainer);
@@ -54,7 +57,8 @@ public class MusicApp {
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             ObjectOutputStream oos = new ObjectOutputStream(bos);
 
-            oos.writeObject(bottomMap);
+            oos.writeObject(pitchMap);
+            oos.writeObject(durationMap);
             oos.writeObject(midMap);
             oos.writeObject(topMap);
             oos.close();
@@ -66,7 +70,7 @@ public class MusicApp {
      * Prints out the input values, used for testing.
      */
     public void printInputs(){
-        java.util.Vector inputs = input.getInput();
+        java.util.Vector inputs = inputPitch.getInput();
         for(int i=0; i<inputs.size(); i++){
             System.out.println(inputs.get(i));
         } 
@@ -79,10 +83,10 @@ public class MusicApp {
      * @param args The arguments, two file names.
      */
     public static void main(String args[]){
-        final MusicApp app = new MusicApp(args[0]);
+        final MusicApp app = new MusicApp(args[0], args[1]);
         //app.printInputs();
         app.start(1000);
-        app.writeMap(args[1]);
+        app.writeMap(args[2]);
     }
 
 }

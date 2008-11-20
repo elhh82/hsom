@@ -103,12 +103,83 @@ public class Note {
     public String toHSOMPitchNotation(int key, int minDuration){
         String convertedNote = "";
         int length = getLength(minDuration);
-        convertedNote = "" + ((getPitchMidi() == 0) ? 99 : getPitchMidi() - key);
+        convertedNote = "" + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
         for(int i=1; i<length; i++){
-            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? 99 : getPitchMidi() - key);
+            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
         }
         
         return convertedNote;
+    }
+    
+    /**
+     * Converts the note into its HSOM Duration representation
+     * @param minDuration the duration of the shortest note in the score
+     * @return a string contatining the duration representation
+     */
+    public String toHSOMDurationNotation(int minDuration){
+        String convertedNote = "";
+        int length = getLength(minDuration);
+        convertedNote = "" + 1;
+        for(int i=1; i<length; i++){
+            convertedNote = convertedNote + "," + 0;
+        }
+        return convertedNote;
+    }
+    
+    
+    /**
+     * Converts to the Spiral Array pitch
+     * @param input the pitch to convert
+     * @return the converted pitch value
+     */
+    private String toSpiralArray(int input){
+        
+        int output = 0;
+        String outputString = "";
+        int octaveShift;
+        if(input >= 0){
+            int normalizedPitch = input % 12;
+            octaveShift = input - normalizedPitch;
+            switch(normalizedPitch){
+                case 0: output = 5; break;
+                case 1: output = 0; break;
+                case 2: output = 7; break;
+                case 3: output = 2; break;
+                case 4: output = 9; break;
+                case 5: output = 4; break;
+                case 6: output = 11; break;
+                case 7: output = 6; break;
+                case 8: output = 1; break;
+                case 9: output = 8; break;
+                case 10: output = 3; break;
+                case 11: output = 10; break;
+            }
+        }
+        else{
+            octaveShift = 12;
+            int normalizedPitch = octaveShift + input;
+            while(normalizedPitch < 0){
+                octaveShift += 12;
+                normalizedPitch = octaveShift + input;
+            }            
+            switch(normalizedPitch){
+                case 0: output = 5; break;
+                case 1: output = 0; break;
+                case 2: output = 7; break;
+                case 3: output = 2; break;
+                case 4: output = 9; break;
+                case 5: output = 4; break;
+                case 6: output = 11; break;
+                case 7: output = 6; break;
+                case 8: output = 1; break;
+                case 9: output = 8; break;
+                case 10: output = 3; break;
+                case 11: output = 10; break;
+            }
+            octaveShift = -octaveShift;
+        }
+        outputString = output + "," + (octaveShift/12);
+        return outputString;
     }
     
 }
