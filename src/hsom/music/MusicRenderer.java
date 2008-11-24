@@ -43,10 +43,14 @@ public class MusicRenderer extends SOMRenderer{
         for(int i=0; i<width; i++){
             for(int j=0; j<width; j++){
                 SOMVector<Float> temp = map.getNode(i,j).getVector();
-                float r = (Float)temp.elementAt(0) + (Float)temp.elementAt(1) ;
+                float r = (Float)temp.elementAt(0) + (Float)temp.elementAt(1);
                 float g = (Float)temp.elementAt(2) + (Float)temp.elementAt(2);
                 float b = (Float)temp.elementAt(3) + (Float)temp.elementAt(4);
                 float a = ((Float)temp.elementAt(5) + (Float)temp.elementAt(6) + 9)/10;
+                if(r > 1) r = 1;
+                if(g > 1) g = 1;
+                if(b > 1) b = 1;
+                if(a > 1) a = 1;
                 SOMArea[i][j].setBackground(new Color(r,g,b,a));
             }
         }
