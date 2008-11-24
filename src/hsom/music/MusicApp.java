@@ -86,6 +86,7 @@ public class MusicApp {
         final MusicApp app = new MusicApp(args[0], args[1]);
         //app.printInputs();
         app.start(1000);
+	if(args[2] == null) args[2] = "defaultoutput.txt";
         app.writeMap(args[2]);
     }
 

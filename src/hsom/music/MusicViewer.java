@@ -12,9 +12,9 @@ import java.io.*;
 
 public class MusicViewer extends JFrame{
 	
-    private MusicRenderer topRenderer, midRenderer, bottomRenderer;
-    private SOMMap topMap, midMap, bottomMap;
-    private JFrame topSOM, midSOM, bottomSOM;
+    private MusicRenderer topRenderer, midRenderer, pitchRenderer, durationRenderer;
+    private SOMMap topMap, midMap, pitchMap, durationMap;
+    private JFrame topSOM, midSOM, pitchSOM, durationSOM;
 
     /** The constructor for ColorsViewer
        * @param inFile	The name of the input file
@@ -22,10 +22,10 @@ public class MusicViewer extends JFrame{
     public MusicViewer(String inFile){
 
         readMap(inFile);
-        topRenderer = new MusicRenderer(topMap);
-        midRenderer = new MusicRenderer(midMap);
-        bottomRenderer = new MusicRenderer(bottomMap);
-        
+        topRenderer = new MusicRenderer(topMap,4);
+        midRenderer = new MusicRenderer(midMap,4);
+        pitchRenderer = new MusicRenderer(pitchMap, 8);
+        durationRenderer = new MusicRenderer(durationMap, 4);
 
     }
 
@@ -37,7 +37,8 @@ public class MusicViewer extends JFrame{
             FileInputStream fis = new FileInputStream(inFile);
             BufferedInputStream bis =  new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(bis);
-            bottomMap = (SOMMap)ois.readObject();
+            pitchMap = (SOMMap)ois.readObject();
+            durationMap = (SOMMap)ois.readObject();
             midMap = (SOMMap)ois.readObject();
             topMap = (SOMMap)ois.readObject();
             ois.close();			
@@ -66,13 +67,21 @@ public class MusicViewer extends JFrame{
         midSOM.setSize(new java.awt.Dimension(600, 600));			
         midSOM.setVisible(true);
         
-        bottomSOM = new JFrame("The Bottom SOM");
-        bottomSOM.setResizable(false);
-        bottomSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        bottomSOM.add(bottomRenderer.getPanel());
-        bottomSOM.pack();		
-        bottomSOM.setSize(new java.awt.Dimension(800, 800));			
-        bottomSOM.setVisible(true);
+        pitchSOM = new JFrame("The pitch SOM");
+        pitchSOM.setResizable(false);
+        pitchSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pitchSOM.add(pitchRenderer.getPanel());
+        pitchSOM.pack();		
+        pitchSOM.setSize(new java.awt.Dimension(800, 800));			
+        pitchSOM.setVisible(true);
+        
+        durationSOM = new JFrame("The duration SOM");
+        durationSOM.setResizable(false);
+        durationSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        durationSOM.add(durationRenderer.getPanel());
+        durationSOM.pack();		
+        durationSOM.setSize(new java.awt.Dimension(400, 400));			
+        durationSOM.setVisible(true);
 
     }
 
