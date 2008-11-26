@@ -23,9 +23,9 @@ public class MusicApp {
     public MusicApp(String pitch, String duration){
         inputPitch = new SOMMusicInput(pitch);
         inputDuration = new SOMMusicInput(duration);
-        pitchMap = new SOMMap(100,100,8);
+        pitchMap = new SOMMap(120,120,8);
         durationMap = new SOMMap(60,60,4);
-        midMap = new SOMMap(80,80,4);
+        midMap = new SOMMap(100,100,8);
         topMap = new SOMMap(60,60,4);
         pitchTrainer = new SOMTrainer(pitchMap, inputPitch);
         durationTrainer = new SOMTrainer(durationMap, inputDuration);
