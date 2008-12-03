@@ -23,7 +23,7 @@ public class MusicViewer extends JFrame{
 
         readMap(inFile);
         topRenderer = new MusicRenderer(topMap,4);
-        midRenderer = new MusicRenderer(midMap,4);
+        midRenderer = new MusicRenderer(midMap,8);
         pitchRenderer = new MusicRenderer(pitchMap, 8);
         durationRenderer = new MusicRenderer(durationMap, 4);
 
