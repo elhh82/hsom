@@ -11,22 +11,26 @@ import java.io.*;
 
 public class MusicPredictionApp {
     
-    private SOMMap bottomMap, midMap, topMap;
-    private SOMMusicMap bottomMusicMap, midMusicMap, topMusicMap;
-    private SOMPredictor bottomPredictor, midPredictor, topPredictor;
+    private SOMMap pitchMap, durationMap, midMap, topMap;
+    private SOMMusicMap pitchMusicMap, durationMusicMap, midMusicMap, topMusicMap;
+    private SOMPredictor pitchPredictor, durationPredictor, midPredictor, topPredictor;
     private SOMPredictorLinker midLinker, topLinker;
-    private SOMMusicPredictionInput input;
+    private SOMMusicPredictionInput inputPitch, inputDuration;
     
     /**
      * The sole constructor
      * @param in The name of the input file
      */
-    public MusicPredictionApp(String predictFile, String sourceFile, String inMap){
+    public MusicPredictionApp(String predictFilePitch, String sourceFilePitch, 
+                              String predictFileDuration, String sourceFileDuration,
+                              String inMap){
         
-        input = new SOMMusicPredictionInput(predictFile, sourceFile);
+        inputPitch = new SOMMusicPredictionInput(predictFilePitch, sourceFilePitch);
+        inputDuration = new SOMMusicPredictionInput(predictFileDuration, sourceFileDuration);
         readMap(inMap);
-        bottomPredictor = new SOMPredictor(bottomMap, input);
-        midLinker = new SOMPredictorLinker(bottomPredictor);
+        pitchPredictor = new SOMPredictor(pitchMap, inputPitch);
+        durationPredictor = new SOMPredictor(durationMap, inputDuration);
+        midLinker = new SOMPredictorLinker(pitchPredictor, durationPredictor);
         midPredictor = new SOMPredictor(midMap, midLinker);
         midLinker.setHigherSOM(midPredictor);
         topLinker = new SOMPredictorLinker(midPredictor);
@@ -43,10 +47,12 @@ public class MusicPredictionApp {
             FileInputStream fis = new FileInputStream(inFile);
             BufferedInputStream bis =  new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(bis);
-            bottomMap = (SOMMap)ois.readObject();
+            pitchMap = (SOMMap)ois.readObject();
+            durationMap = (SOMMap)ois.readObject();
             midMap = (SOMMap)ois.readObject();
             topMap = (SOMMap)ois.readObject();
-            bottomMusicMap = new SOMMusicMap(bottomMap);
+            pitchMusicMap = new SOMMusicMap(pitchMap);
+            durationMusicMap = new SOMMusicMap(durationMap);
             midMusicMap = new SOMMusicMap(midMap);
             topMusicMap = new SOMMusicMap(topMap);
             ois.close();			
@@ -66,10 +72,10 @@ public class MusicPredictionApp {
     }
     
     /**
-     * Prints out the input values, used for testing.
+     * Prints out the pitch input values, used for testing.
      */
     public void printInputs(){
-        java.util.Vector inputs = input.getInput();
+        java.util.Vector inputs = inputPitch.getInput();
         for(int i=0; i<inputs.size(); i++){
             System.out.println(inputs.get(i));
         } 
@@ -77,10 +83,10 @@ public class MusicPredictionApp {
     }
     
     /**
-     * Prints out the output values, used for testing.
+     * Prints out the pitch output values, used for testing.
      */
     public void printOutputs(){
-        java.util.Vector outputs = bottomPredictor.getOutput();
+        java.util.Vector outputs = pitchPredictor.getOutput();
         for(int i=0; i<outputs.size(); i++){
             System.out.println(outputs.get(i));
         } 
@@ -117,6 +123,7 @@ public class MusicPredictionApp {
         }
         bottomMusicMap.getPrediction(outputs, input.getRange());
         */
+        /*
         //predict from top
         System.out.println("top");
         java.util.Vector outputs = topPredictor.getOutput();
@@ -129,11 +136,11 @@ public class MusicPredictionApp {
         java.util.Vector midoutputs = midPredictor.getOutput();
         String[] midpredictions = midMusicMap.getPredictedNodes(midoutputs, bottomMap.getHeight(), bottomMap.getWidth());
         bottomMusicMap.getPrediction(midpredictions, input.getRange());
-        
+        */
         //predict from boyyom
         System.out.println("Bottom");
-        java.util.Vector bottomoutputs = bottomPredictor.getOutput();
-        bottomMusicMap.getPrediction(bottomoutputs, input.getRange());
+        java.util.Vector pitchoutputs = pitchPredictor.getOutput();
+        pitchMusicMap.getPrediction(pitchoutputs, inputPitch.getRange());
         //System.out.println("===============");
         //contents of the nodes in question
         //midMusicMap.getPrediction(outputs, 100);
@@ -159,7 +166,9 @@ public class MusicPredictionApp {
             String[] splitLink = links[i].split("\\p{Punct}");
             //temporary patch here to get rid of the space in splitLink[1]
             if(Integer.parseInt(splitLink[1].split(" ")[0]) == 0){
-                bestNodes[0] = bottomMap.getNode(Integer.parseInt(splitLink[2]),Integer.parseInt(splitLink[3]));
+                
+//please recheck this               
+                bestNodes[0] = pitchMap.getNode(Integer.parseInt(splitLink[2]),Integer.parseInt(splitLink[3]));
                 break;
             }
         }
@@ -167,7 +176,8 @@ public class MusicPredictionApp {
             String[] splitLink = links[i].split("\\p{Punct}");
             //temporary patch here to get rid of the space in splitLink[1]
             if(Integer.parseInt(splitLink[1].split(" ")[0]) == 1){
-                bestNodes[1] = bottomMap.getNode(Integer.parseInt(splitLink[2]),Integer.parseInt(splitLink[3]));
+//please recheck this
+                bestNodes[1] = pitchMap.getNode(Integer.parseInt(splitLink[2]),Integer.parseInt(splitLink[3]));
                 break;
             }
         }
@@ -180,7 +190,7 @@ public class MusicPredictionApp {
      * @param args The arguments, two file names.
      */
     public static void main(String args[]){
-        final MusicPredictionApp app = new MusicPredictionApp(args[0], args[1], args[2]);
+        final MusicPredictionApp app = new MusicPredictionApp(args[0], args[1], args[2], args[3], args[4]);
         //app.printInputs();
         //app.printInputs();
         app.start();
