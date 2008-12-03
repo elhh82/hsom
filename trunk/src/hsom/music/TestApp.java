@@ -24,11 +24,11 @@ public class TestApp {
         inputPitch = new SOMMusicInput(pitch);
         inputDuration = new SOMMusicInput(duration);
         pitchMap = new SOMMap(120,120,8);
-        //durationMap = new SOMMap(60,60,4);
+        durationMap = new SOMMap(60,60,4);
         //midMap = new SOMMap(100,100,8);
         //topMap = new SOMMap(60,60,4);
         pitchTrainer = new SOMTrainer(pitchMap, inputPitch);
-        //durationTrainer = new SOMTrainer(durationMap, inputDuration);
+        durationTrainer = new SOMTrainer(durationMap, inputDuration);
         //midLinker = new SOMLinker(pitchTrainer, durationTrainer);
         //midTrainer = new SOMTrainer(midMap, midLinker);
         //midLinker.setHigherSOM(midTrainer);
@@ -44,7 +44,7 @@ public class TestApp {
     public void start(int iterations){
 
         pitchTrainer.start(iterations);
-
+        durationTrainer.start(iterations);
     }
     
      /** Writes the map into a file
@@ -58,7 +58,7 @@ public class TestApp {
             ObjectOutputStream oos = new ObjectOutputStream(bos);
 
             oos.writeObject(pitchMap);
-            //oos.writeObject(durationMap);
+            oos.writeObject(durationMap);
             //oos.writeObject(midMap);
             //oos.writeObject(topMap);
             oos.close();
