@@ -93,7 +93,7 @@ public class MusicApp2 {
      * @param args The arguments, two file names.
      */
     public static void main(String args[]){
-        final MusicApp app = new MusicApp(args[0], args[1]);
+        final MusicApp2 app = new MusicApp2(args[0], args[1]);
         //app.printInputs();
         app.start(1000);
 	if(args[2] == null) args[2] = "defaultoutput.txt";
