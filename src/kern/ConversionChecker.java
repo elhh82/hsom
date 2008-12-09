@@ -47,11 +47,11 @@ public class ConversionChecker {
                 System.out.print(sr[0] + ": ");
                 int length = sr[1].split(",").length;
                 System.out.print(length + "      ");
-                String divBy8 = (length % 4 == 0) ? "Yes" : "No";
-                String divBy16 = (length % 8 == 0) ? "Yes" : "No";
+                String divBy8 = (length % 16 == 0) ? "Yes" : "No";
+                String divBy16 = (length % 32 == 0) ? "Yes" : "No";
                 System.out.println('\t' + divBy8 + '\t'+'\t' + divBy16);
-                boolean d8 = (length % 4 == 0) ? true : false;
-                boolean d16 = (length % 8 == 0) ? true : false;                
+                boolean d8 = (length % 16 == 0) ? true : false;
+                boolean d16 = (length % 32 == 0) ? true : false;
                 max = (max < getMax(s)) ? getMax(s) : max;
                 min = (min > getMin(s)) ? getMin(s) : min;
                 if(cleanup){
@@ -93,15 +93,15 @@ public class ConversionChecker {
                  String[] sr = s.split(" ");
                  String[] notes = sr[1].split(",");
                  
-                 for(int i=0; i+8<notes.length; i++){
-                     output.write(sr[0] + "-" + (int)(i/8) + " ");
+                 for(int i=0; i+32<notes.length; i++){
+                     output.write(sr[0] + "-" + (int)(i/32) + " ");
                      output.write(notes[i]);                     
-                     for(int j=1; j<16; j++){
+                     for(int j=1; j<64; j++){
                          output.write(",");
                          output.write(notes[i+j]);    
                      }
                      output.write('\n');
-                     i+=7;
+                     i+=31;
                  }
             }
             output.flush();
