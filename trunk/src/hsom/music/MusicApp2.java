@@ -11,9 +11,9 @@ import java.io.*;
 
 public class MusicApp2 {
     
-    private SOMMap pitchMap2, durationMap, pitchMap4, joinMap, midMap, topMap;
-    private SOMTrainer pitchTrainer2, durationTrainer, pitchTrainer4, joinTrainer, midTrainer, topTrainer;
-    private SOMLinker pitchLinker, joinLinker, midLinker, topLinker;
+    private SOMMap pitchMap2, durationMap, pitchMap4, joinMap, midMap, topMap, top64Map;
+    private SOMTrainer pitchTrainer2, durationTrainer, pitchTrainer4, joinTrainer, midTrainer, topTrainer, top64Trainer;
+    private SOMLinker pitchLinker, joinLinker, midLinker, topLinker, top64Linker;
     private SOMMusicInput inputPitch, inputDuration;
     
     /**
@@ -29,6 +29,7 @@ public class MusicApp2 {
         joinMap = new SOMMap(80,80,4);
         midMap = new SOMMap(80,80,4);
         topMap = new SOMMap(60,60,4);
+        top64Map = new SOMMap(50,50,4);
         pitchTrainer2 = new SOMTrainer(pitchMap2, inputPitch);
         durationTrainer = new SOMTrainer(durationMap, inputDuration);
         pitchLinker = new SOMLinker(pitchTrainer2);
@@ -42,7 +43,10 @@ public class MusicApp2 {
         midLinker.setHigherSOM(midTrainer);
         topLinker = new SOMLinker(midTrainer);
         topTrainer = new SOMTrainer(topMap, topLinker);
-        topLinker.setHigherSOM(topTrainer); 
+        topLinker.setHigherSOM(topTrainer);
+        top64Linker = new SOMLinker(topTrainer);
+        top64Trainer = new SOMTrainer(top64Map, top64Linker);
+        top64Linker.setHigherSOM(top64Trainer);
         
     }
     
@@ -51,7 +55,7 @@ public class MusicApp2 {
        */
     public void start(int iterations){
 
-        topTrainer.start(iterations);
+        top64Trainer.start(iterations);
 
     }
     
@@ -71,6 +75,7 @@ public class MusicApp2 {
             oos.writeObject(joinMap);
             oos.writeObject(midMap);
             oos.writeObject(topMap);
+            oos.writeObject(top64Map);
             oos.close();
 
         }catch(Exception e){};
