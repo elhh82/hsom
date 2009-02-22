@@ -22,10 +22,10 @@ public class MusicViewer2 extends JFrame{
     public MusicViewer2(String inFile){
 
         readMap(inFile);
-        topRenderer = new MusicUMatrixRenderer(topMap,(float)0.5);
-        midRenderer = new MusicUMatrixRenderer(midMap,(float)0.5);
-        pitchRenderer = new MusicUMatrixRenderer(pitchMap, (float)0.5);
-        durationRenderer = new MusicUMatrixRenderer(durationMap, (float)0.5);
+        topRenderer = new MusicUMatrixRenderer(topMap,(float)0.95);
+        midRenderer = new MusicUMatrixRenderer(midMap,(float)0.9);
+        pitchRenderer = new MusicUMatrixRenderer(pitchMap, (float)0.95);
+        durationRenderer = new MusicUMatrixRenderer(durationMap, (float)0.9);
 
     }
 

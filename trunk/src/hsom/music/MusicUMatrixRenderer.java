@@ -27,8 +27,9 @@ public class MusicUMatrixRenderer extends SOMRenderer{
         for(int i=0; i<width; i++){
             for(int j=0; j<height; j++){
                 float val = new Float(getUMatrix(i,j));
-                if((1-val) < treshold) val = 0;
-                SOMArea[i][j].setBackground(new Color(1-val, 1-val, 1-val));
+                //if((1-val) < treshold) SOMArea[i][j].setBackground(new Color(0, 0, 0));
+                //else SOMArea[i][j].setBackground(new Color(1-val, 1-val, 1-val));
+                SOMArea[i][j].setBackground(new Color(1/val, 1/val, 1/val));
             }
         }
     }
