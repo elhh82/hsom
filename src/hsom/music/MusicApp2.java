@@ -29,7 +29,7 @@ public class MusicApp2 {
         joinMap = new SOMMap(80,80,4);
         midMap = new SOMMap(80,80,4);
         topMap = new SOMMap(60,60,4);
-        top64Map = new SOMMap(50,50,4);
+        //top64Map = new SOMMap(50,50,4);
         pitchTrainer2 = new SOMTrainer(pitchMap2, inputPitch);
         durationTrainer = new SOMTrainer(durationMap, inputDuration);
         pitchLinker = new SOMLinker(pitchTrainer2);
@@ -44,9 +44,9 @@ public class MusicApp2 {
         topLinker = new SOMLinker(midTrainer);
         topTrainer = new SOMTrainer(topMap, topLinker);
         topLinker.setHigherSOM(topTrainer);
-        top64Linker = new SOMLinker(topTrainer);
-        top64Trainer = new SOMTrainer(top64Map, top64Linker);
-        top64Linker.setHigherSOM(top64Trainer);
+        //top64Linker = new SOMLinker(topTrainer);
+        //top64Trainer = new SOMTrainer(top64Map, top64Linker);
+        //top64Linker.setHigherSOM(top64Trainer);
         
     }
     
@@ -54,8 +54,8 @@ public class MusicApp2 {
        * @param	iterations	the number of times to train
        */
     public void start(int iterations){
-
-        top64Trainer.start(iterations);
+        topTrainer.start(iterations);
+        //top64Trainer.start(iterations);
 
     }
     
@@ -75,7 +75,7 @@ public class MusicApp2 {
             oos.writeObject(joinMap);
             oos.writeObject(midMap);
             oos.writeObject(topMap);
-            oos.writeObject(top64Map);
+            //oos.writeObject(top64Map);
             oos.close();
 
         }catch(Exception e){};
@@ -101,7 +101,7 @@ public class MusicApp2 {
         final MusicApp2 app = new MusicApp2(args[0], args[1]);
         //app.printInputs();
         app.start(1000);
-	if(args[2] == null) args[2] = "defaultoutput.txt";
+	if(args[2] == null) args[2] = "defaultoutput.map";
         app.writeMap(args[2]);
     }
 
