@@ -12,9 +12,9 @@ import java.io.*;
 
 public class MusicViewer2 extends JFrame{
 	
-    private MusicUMatrixRenderer topRenderer, midRenderer, pitchRenderer, durationRenderer;
-    private SOMMap topMap, midMap, pitchMap, durationMap;
-    private JFrame topSOM, midSOM, pitchSOM, durationSOM;
+    private MusicUMatrixRenderer topRenderer, midRenderer, joinRenderer, pitch2Renderer, pitch4Renderer, durationRenderer;
+    private SOMMusicMap topMap, midMap, joinMap, pitch2Map, pitch4Map, durationMap;
+    private JFrame topSOM, midSOM, joinSOM, pitch2SOM, pitch4SOM, durationSOM;
 
     /** The constructor for ColorsViewer
        * @param inFile	The name of the input file
@@ -23,8 +23,10 @@ public class MusicViewer2 extends JFrame{
 
         readMap(inFile);
         topRenderer = new MusicUMatrixRenderer(topMap,(float)0.95);
-        midRenderer = new MusicUMatrixRenderer(midMap,(float)0.9);
-        pitchRenderer = new MusicUMatrixRenderer(pitchMap, (float)0.95);
+        midRenderer = new MusicUMatrixRenderer(midMap,(float)0.95);
+        joinRenderer = new MusicUMatrixRenderer(joinMap, (float)0.95);
+        pitch2Renderer = new MusicUMatrixRenderer(pitch2Map, (float)0.95);
+        pitch4Renderer = new MusicUMatrixRenderer(pitch4Map, (float)0.95);
         durationRenderer = new MusicUMatrixRenderer(durationMap, (float)0.9);
 
     }
@@ -37,10 +39,12 @@ public class MusicViewer2 extends JFrame{
             FileInputStream fis = new FileInputStream(inFile);
             BufferedInputStream bis =  new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(bis);
-            pitchMap = (SOMMap)ois.readObject();
-            durationMap = (SOMMap)ois.readObject();
-            midMap = (SOMMap)ois.readObject();
-            topMap = (SOMMap)ois.readObject();
+            pitch2Map = (SOMMusicMap)ois.readObject();
+            pitch4Map = (SOMMusicMap)ois.readObject();
+            durationMap = (SOMMusicMap)ois.readObject();
+            joinMap = (SOMMusicMap)ois.readObject();
+            midMap = (SOMMusicMap)ois.readObject();
+            topMap = (SOMMusicMap)ois.readObject();
             ois.close();			
         }catch(Exception e){
             System.out.println(e);
@@ -66,14 +70,30 @@ public class MusicViewer2 extends JFrame{
         midSOM.pack();		
         midSOM.setSize(new java.awt.Dimension(600, 600));			
         midSOM.setVisible(true);
+
+        joinSOM = new JFrame("The join SOM");
+        joinSOM.setResizable(false);
+        joinSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        joinSOM.add(joinRenderer.getPanel());
+        joinSOM.pack();
+        joinSOM.setSize(new java.awt.Dimension(600, 600));
+        joinSOM.setVisible(true);
+
+        pitch4SOM = new JFrame("The pitch4 SOM");
+        pitch4SOM.setResizable(false);
+        pitch4SOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pitch4SOM.add(pitch4Renderer.getPanel());
+        pitch4SOM.pack();
+        pitch4SOM.setSize(new java.awt.Dimension(800, 800));
+        pitch4SOM.setVisible(true);
         
-        pitchSOM = new JFrame("The pitch SOM");
-        pitchSOM.setResizable(false);
-        pitchSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pitchSOM.add(pitchRenderer.getPanel());
-        pitchSOM.pack();		
-        pitchSOM.setSize(new java.awt.Dimension(800, 800));			
-        pitchSOM.setVisible(true);
+        pitch2SOM = new JFrame("The pitch2 SOM");
+        pitch2SOM.setResizable(false);
+        pitch2SOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pitch2SOM.add(pitch2Renderer.getPanel());
+        pitch2SOM.pack();
+        pitch2SOM.setSize(new java.awt.Dimension(800, 800));
+        pitch2SOM.setVisible(true);
         
         durationSOM = new JFrame("The duration SOM");
         durationSOM.setResizable(false);

@@ -30,7 +30,6 @@ public class SOMRenderer{
         height = m.getHeight();
         map = m;
         SOMPanel = new JPanel(new SpringLayout());
-        calcUMatrix();
         buildMap();
 
     }
@@ -38,7 +37,7 @@ public class SOMRenderer{
     /** Calculates the UMatrix for the map
      * 
      */
-    private void calcUMatrix(){
+    /*public void calcUMatrix(){
         double max = 0;
         UMatrix = new double[width][height];
         for(int x=0; x < width; x++){
@@ -136,7 +135,7 @@ public class SOMRenderer{
             }
         }
 
-    }
+    }*/
     /** Builds the JTextArea using the SpringUtilities class
        */
     public void buildMap(){
@@ -176,9 +175,9 @@ public class SOMRenderer{
      *
      * @return a 2 dimensional double array which is the UMatrix
      */
-    public double[][] getUMatrix(){
+    /*public double[][] getUMatrix(){
         return UMatrix;
-    }
+    }*/
 
     /** Returns the UMatrix for a specific node
      *
@@ -186,8 +185,8 @@ public class SOMRenderer{
      * @param   y The y coordinate of the node
      * @return  The Umatrix of the node
      */
-    public double getUMatrix(int x, int y){
+    /*public double getUMatrix(int x, int y){
         return UMatrix[x][y];
-    }
+    }*/
 
 }

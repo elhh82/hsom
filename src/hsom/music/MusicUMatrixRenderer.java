@@ -8,16 +8,17 @@
 package hsom.music;
 
 import hsom.util.*;
-import hsom.core.*;
 import java.awt.Color;
 
 public class MusicUMatrixRenderer extends SOMRenderer{
-	
+
+    SOMMusicMap musicMap;
     /** The constructor which just calls the superclass constructor
        * @param m		the SOMMap associated with this ColorRenderer
        */
-    public MusicUMatrixRenderer(SOMMap m, float treshold){
-        super(m);
+    public MusicUMatrixRenderer(SOMMusicMap m, float treshold){
+        super(m.getMap());
+        musicMap = m;
         numberMap(treshold);
     }
 
@@ -26,10 +27,10 @@ public class MusicUMatrixRenderer extends SOMRenderer{
     public void numberMap(float treshold){
         for(int i=0; i<width; i++){
             for(int j=0; j<height; j++){
-                float val = new Float(getUMatrix(i,j));
-                //if((1-val) < treshold) SOMArea[i][j].setBackground(new Color(0, 0, 0));
-                //else SOMArea[i][j].setBackground(new Color(1-val, 1-val, 1-val));
-                SOMArea[i][j].setBackground(new Color(1/val, 1/val, 1/val));
+                float val = new Float(musicMap.getUMatrix(i,j));
+                if((1-val) < treshold) SOMArea[i][j].setBackground(new Color(0, 0, 0));
+                else SOMArea[i][j].setBackground(new Color(1-val, 1-val, 1-val));
+                //SOMArea[i][j].setBackground(new Color(1/(1+val), 1/(1+val), 1/(1+val)));
             }
         }
     }
