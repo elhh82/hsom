@@ -9,14 +9,187 @@ package hsom.music;
 import hsom.core.*;
 import java.util.Vector;
 import java.util.Random;
+import java.io.*;
 
-public class SOMMusicMap {
+public class SOMMusicMap implements Serializable{
     
     SOMMap map;
+    protected double[][] UMatrix;
+    protected String[][] labels;
     
     //a constructor for the SOMMusicMap
     public SOMMusicMap(SOMMap m){
         map = m;
+        
+        //initialize and set the labels to blanks
+        labels = new String[m.getWidth()][m.getHeight()];
+        for(int x = 0; x<m.getWidth(); x++){
+            for(int y=0; y<m.getHeight(); y++){
+                labels[x][y] = "";
+            }
+        }
+
+    }
+
+    /**
+     * Returns the SOMMap
+     * @return returns a SOMMap
+     */
+    public SOMMap getMap(){
+        return map;
+    }
+
+    /**
+     * Calculates the UMatrix for the map
+     */
+    public void calcUMatrix(){
+
+        double max = 0;
+        UMatrix = new double[map.getWidth()][map.getHeight()];
+        for(int x=0; x < map.getWidth(); x++){
+            for(int y=0; y< map.getHeight(); y++){
+                if(x==0 && y==0){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> rightNode = map.getNode(x+1,y).getVector();
+                    SOMVector<Float> bottomNode = map.getNode(x,y+1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(rightNode)+
+                                    centerNode.euclideanDistance(bottomNode))/2;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else if(x==map.getWidth()-1 && y==map.getHeight()-1){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> leftNode = map.getNode(x-1,y).getVector();
+                    SOMVector<Float> topNode = map.getNode(x,y-1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(leftNode)+
+                                    centerNode.euclideanDistance(topNode))/2;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else if(x==0 && y==map.getHeight()-1){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> rightNode = map.getNode(x+1,y).getVector();
+                    SOMVector<Float> topNode = map.getNode(x,y-1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(rightNode)+
+                                    centerNode.euclideanDistance(topNode))/2;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else if(x==map.getWidth()-1 && y==0){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> leftNode = map.getNode(x-1,y).getVector();
+                    SOMVector<Float> bottomNode = map.getNode(x,y+1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(leftNode)+
+                                    centerNode.euclideanDistance(bottomNode))/2;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else if(x==0){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> rightNode = map.getNode(x+1,y).getVector();
+                    SOMVector<Float> topNode = map.getNode(x,y-1).getVector();
+                    SOMVector<Float> bottomNode = map.getNode(x,y+1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(rightNode)+
+                                    centerNode.euclideanDistance(topNode)+
+                                    centerNode.euclideanDistance(bottomNode))/3;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else if(y==0){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> leftNode = map.getNode(x-1,y).getVector();
+                    SOMVector<Float> rightNode = map.getNode(x+1,y).getVector();
+                    SOMVector<Float> bottomNode = map.getNode(x,y+1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(leftNode)+
+                                    centerNode.euclideanDistance(rightNode)+
+                                    centerNode.euclideanDistance(bottomNode))/3;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else if(x==map.getWidth()-1){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> leftNode = map.getNode(x-1,y).getVector();
+                    SOMVector<Float> topNode = map.getNode(x,y-1).getVector();
+                    SOMVector<Float> bottomNode = map.getNode(x,y+1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(leftNode)+
+                                    centerNode.euclideanDistance(topNode)+
+                                    centerNode.euclideanDistance(bottomNode))/3;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else if(y==map.getHeight()-1){
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> leftNode = map.getNode(x-1,y).getVector();
+                    SOMVector<Float> rightNode = map.getNode(x+1,y).getVector();
+                    SOMVector<Float> topNode = map.getNode(x,y-1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(leftNode)+
+                                    centerNode.euclideanDistance(rightNode)+
+                                    centerNode.euclideanDistance(topNode))/3;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+                else{
+                    SOMVector<Float> centerNode = map.getNode(x,y).getVector();
+                    SOMVector<Float> leftNode = map.getNode(x-1,y).getVector();
+                    SOMVector<Float> rightNode = map.getNode(x+1,y).getVector();
+                    SOMVector<Float> topNode = map.getNode(x,y-1).getVector();
+                    SOMVector<Float> bottomNode = map.getNode(x,y+1).getVector();
+                    UMatrix[x][y] = (centerNode.euclideanDistance(leftNode)+
+                                    centerNode.euclideanDistance(rightNode)+
+                                    centerNode.euclideanDistance(topNode)+
+                                    centerNode.euclideanDistance(bottomNode))/4;
+                    if(UMatrix[x][y] > max) max = UMatrix[x][y];
+                }
+
+            }
+        }
+        for(int x=0; x < map.getWidth(); x++){
+            for(int y=0; y< map.getHeight(); y++){
+                UMatrix[x][y] = UMatrix[x][y] / max;
+            }
+        }
+
+
+    }
+
+    /** Returns the UMatrix (2-dim double array) for this map
+     *
+     * @return a 2 dimensional double array which is the UMatrix
+     */
+    public double[][] getUMatrix(){
+        if(UMatrix == null) calcUMatrix();
+        return UMatrix;
+    }
+
+    /** Returns the UMatrix for a specific node
+     *
+     * @param   x The x coodinate of the node
+     * @param   y The y coordinate of the node
+     * @return  The Umatrix of the node
+     */
+    public double getUMatrix(int x, int y){
+        if(UMatrix == null) calcUMatrix();
+        return UMatrix[x][y];
+    }
+
+    /**
+     * Sets one label
+     * @param label     The label to set to
+     * @param x         The x coordinate of the node
+     * @param y         The y coordinate of the node
+     */
+    public void setLabel(String label, int x, int y){
+        labels[x][y] = label;
+    }
+
+    /**
+     * Returns all the labels for this map
+     * @return          All the labels in a 2 dimensional string array
+     */
+    public String[][] getLabels(){
+        return labels;
+    }
+
+    /**
+     * Returns the label for the node specified
+     * @param x         The x coordinate of the node
+     * @param y         The y coordinate of the node
+     * @return          The label of the node specified
+     */
+    public String getLabel(int x, int y){
+        return labels[x][y];
     }
     
     //obtains a predicted downlink using outputs from the SOMPredictor

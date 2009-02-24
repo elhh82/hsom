@@ -101,8 +101,8 @@ public class MusicApp2 {
         final MusicApp2 app = new MusicApp2(args[0], args[1]);
         //app.printInputs();
         app.start(1000);
-	if(args[2] == null) args[2] = "defaultoutput.map";
-        app.writeMap(args[2]);
-    }
+        if(args[2] == null) args[2] = "defaultoutput.map";
+            app.writeMap(args[2]);
+        }
 
 }
