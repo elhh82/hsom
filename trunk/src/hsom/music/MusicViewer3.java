@@ -25,7 +25,7 @@ public class MusicViewer3 extends JFrame{
         readMap(inFile);
         durationMusicMap = new SOMMusicMap(durationMap);
         durationMusicMap.calcUMatrix();
-        durationRenderer = new MusicUMatrixRenderer(durationMusicMap, (float)0.9);
+        durationRenderer = new MusicUMatrixRenderer(durationMusicMap, (float)0.95);
 
     }
 
