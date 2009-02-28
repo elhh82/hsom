@@ -223,6 +223,7 @@ public class KernConverter {
         //outFile = args[1];
         for(int i=0; i<args.length-1; i++){
             KernConverter kc = new KernConverter(args[i], args[args.length-1]);
+            System.out.println(args[i]);
             kc.parseFile();
             kc.convert(); 
             kc.durationConvert();

@@ -5,6 +5,7 @@
 
 package kern;
 
+import java.text.DecimalFormat;
 
 public class Note {
     
@@ -103,11 +104,25 @@ public class Note {
     public String toHSOMPitchNotation(int key, int minDuration){
         String convertedNote = "";
         int length = getLength(minDuration);
+
+        //this part with octave shift standard
+        /*
+        convertedNote = "" + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
+        for(int i=1; i<length; i++){
+            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
+        }*/
+
+        //this part without octave shift info
+        /*convertedNote = "" + ((getPitchMidi() == 0) ? "99" : toSpiralArray(getPitchMidi() - key));
+        for(int i=1; i<length; i++){
+            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99" : toSpiralArray(getPitchMidi() - key));
+        }*/
+
+        //this part with enhanced octave shift info
         convertedNote = "" + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
         for(int i=1; i<length; i++){
             convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
         }
-        
         return convertedNote;
     }
     
@@ -178,7 +193,20 @@ public class Note {
             }
             octaveShift = -octaveShift;
         }
-        outputString = output + "," + (octaveShift/12);
+        //with standard octave shift info
+        //outputString = output + "," + (octaveShift/12);
+
+        //without octave shift info
+        //output = output + octaveShift;
+        //outputString = output + "";
+
+        //with enhanced octave shift info
+        //give +0.2 for every shift up, and -0.2 for shift down
+        //maximum shift is 2 octaves in either direction
+        DecimalFormat df = new DecimalFormat("#00.0");
+
+        outputString = df.format((double)output + octaveShift/60.0);
+
         return outputString;
     }
     

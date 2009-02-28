@@ -7,7 +7,6 @@
 package hsom.music;
 
 import javax.swing.*;
-import hsom.core.*;
 import java.io.*;
 
 public class MusicViewer2 extends JFrame{
