@@ -36,7 +36,7 @@ public class SOMNode implements Serializable{
     @SuppressWarnings("unchecked")
     public SOMNode(int numWeights){	
 
-        Random rand = new Random();
+        Random rand = new Random(123456789);
         weights = new SOMVector();
 
         for(int i=0; i<numWeights; i++){						

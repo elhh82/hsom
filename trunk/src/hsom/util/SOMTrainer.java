@@ -7,6 +7,7 @@
 package hsom.util;
 
 import java.util.Vector;
+import java.util.Collections;
 import hsom.core.*;
 
 public class SOMTrainer implements Runnable{
@@ -140,6 +141,8 @@ public class SOMTrainer implements Runnable{
         double nbhRadius = getNeighborhoodRadius(iteration);
         SOMNode bmu=null, temp=null;
         inputVector = input.getAdjustedInput(vectorLength);
+        //we shuffle the inputs around
+        //Collections.shuffle(inputVector);
         int splitParts =  inputVector.size() / input.getInput().size();
         SOMNode[][] inputNodes = input.getNodes(inputVector);
         SOMVector<Float> curInput = null;
