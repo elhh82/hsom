@@ -70,7 +70,7 @@ public class MusicViewer3 extends JFrame{
                 public void run(){
                         viewer.paint();
                 }
-        });		
+        });
     }
 	
 	
