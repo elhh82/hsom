@@ -54,7 +54,6 @@ public class SOMOutput extends SOMTrainer {
     @Override
     public void run(){
         ranonce = true;
-        System.out.println("called");
         //the paramaters that will be used during the training.
         int vectorLength = map.getNode(0,0).getVector().size();
         Vector inputVector;

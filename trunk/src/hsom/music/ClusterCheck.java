@@ -20,6 +20,7 @@ public class ClusterCheck {
      * The sole constructor
      * @param in The name of the input file
      */
+    @SuppressWarnings("unchecked")
     public ClusterCheck(String duration, String inMap){
 
         inputDuration = new SOMMusicInput(duration);
