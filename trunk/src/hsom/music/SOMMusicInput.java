@@ -15,9 +15,9 @@
  public class SOMMusicInput extends SOMInput{
 	 
     // The range of our input values for the Music SOM 
-    private int range = 1; 
-    private int max = 0;
-    private int min = 0;
+    private float range = 1;
+    private float max = 0;
+    private float min = 0;
 
     private BufferedReader inputBuffer;
     
@@ -55,7 +55,7 @@
      */
     private void findRange(String inFile){
         readFile(inFile);
-        int mx=-999, mn=999;
+        float mx=-999, mn=999;
         
         try{
             String preLineRead = inputBuffer.readLine();
@@ -67,7 +67,7 @@
                 StringTokenizer tokenizer = new StringTokenizer(lineRead, delim);
                 //tokenizer.nextToken();
                 while(tokenizer.hasMoreTokens()){
-                    int nextVal = Integer.parseInt(tokenizer.nextToken());
+                    float nextVal = Float.parseFloat(tokenizer.nextToken());
                     if(nextVal > mx) mx = nextVal;
                     if(nextVal < mn) mn = nextVal;
                 }
