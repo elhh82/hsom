@@ -142,7 +142,7 @@ public class SOMTrainer implements Runnable{
         SOMNode bmu=null, temp=null;
         inputVector = input.getAdjustedInput(vectorLength);
         //we shuffle the inputs around
-        //Collections.shuffle(inputVector);
+        Collections.shuffle(inputVector);
         int splitParts =  inputVector.size() / input.getInput().size();
         SOMNode[][] inputNodes = input.getNodes(inputVector);
         SOMVector<Float> curInput = null;
