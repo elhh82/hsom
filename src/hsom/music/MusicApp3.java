@@ -22,7 +22,7 @@ public class MusicApp3 {
      */
     public MusicApp3(String pitch){
         inputPitch = new SOMMusicInput(pitch);
-        pitchMap = new SOMMap(40,40,8);
+        pitchMap = new SOMMap(60,60,8);
         pitchTrainer = new SOMTrainer(pitchMap, inputPitch);
         
     }
