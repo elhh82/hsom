@@ -103,8 +103,8 @@ public class MusicApp3 {
         final MusicApp3 app = new MusicApp3(args[0], args[1], args[2], args[3]);
         //app.printInputs();
         app.start(1000);
-	if(args[1] == null) args[1] = "defaultoutput.txt";
-        app.writeMap(args[1]);
+	if(args[1] == null) args[4] = "defaultoutput.txt";
+        app.writeMap(args[4]);
     }
 
 }
