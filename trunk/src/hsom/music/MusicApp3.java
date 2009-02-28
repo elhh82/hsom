@@ -11,19 +11,19 @@ import java.io.*;
 
 public class MusicApp3 {
     
-    private SOMMap durationMap;
-    private SOMTrainer durationTrainer;
+    private SOMMap pitchMap;
+    private SOMTrainer pitchTrainer;
     //private SOMLinker midLinker, topLinker;
-    private SOMMusicInput inputDuration;
+    private SOMMusicInput inputPitch;
     
     /**
      * The sole constructor
      * @param in The name of the input file
      */
-    public MusicApp3(String duration){
-        inputDuration = new SOMMusicInput(duration);
-        durationMap = new SOMMap(20,20,8);
-        durationTrainer = new SOMTrainer(durationMap, inputDuration);
+    public MusicApp3(String pitch){
+        inputPitch = new SOMMusicInput(pitch);
+        pitchMap = new SOMMap(40,40,8);
+        pitchTrainer = new SOMTrainer(pitchMap, inputPitch);
         
     }
     
@@ -32,7 +32,7 @@ public class MusicApp3 {
        */
     public void start(int iterations){
 
-        durationTrainer.start(iterations);
+        pitchTrainer.start(iterations);
 
     }
     
@@ -46,7 +46,7 @@ public class MusicApp3 {
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             ObjectOutputStream oos = new ObjectOutputStream(bos);
 
-            oos.writeObject(durationMap);
+            oos.writeObject(pitchMap);
             oos.close();
 
         }catch(Exception e){};
