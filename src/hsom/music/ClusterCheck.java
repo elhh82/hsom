@@ -33,7 +33,7 @@ public class ClusterCheck {
         output = durationOutput.getOutput();
 
         for(int i=0; i<output.size(); i++){
-            System.out.print(i+1 + " - ");
+            System.out.print(((i/8)+1) + "-" + (i%8+1) + " - ");
             curOutput = (SOMVector<Float>)output.elementAt(i);
             printOutput(curOutput, durationMap.getMap());
             //System.out.println(curOutput);
