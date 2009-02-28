@@ -12,27 +12,27 @@ import hsom.core.*;
 public class SOMTrainer implements Runnable{
 	
     //Learning rate that can be adjusted to tweak the learning algorithm.
-    private double startLearningRate = 0.1;
+    protected double startLearningRate = 0.1;
 
     //Number of iteration can be changed to suit needs.
-    private int	maxIterations = 1000;
+    protected int	maxIterations = 1000;
 
     //These 2 are non adjustable parameters that depends on the SOM map size.
-    private double MAP_RADIUS;
-    private double TIME_CONSTANT;
+    protected double MAP_RADIUS;
+    protected double TIME_CONSTANT;
 
     //the map for this trainer
-    private SOMMap map;
+    protected SOMMap map;
 
     //iteration counter
-    private int iteration;
+    protected int iteration;
 
     //the vector containing the inputs and outputs to the SOM
-    private SOMInput input;
-    private Vector output;
+    protected SOMInput input;
+    protected Vector output;
 
     //the thread instance
-    private Thread runner;
+    protected Thread runner;
 
     /**
       * The constructor for SOMTrainer for bottom or single SOMs.
