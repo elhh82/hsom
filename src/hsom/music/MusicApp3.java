@@ -14,7 +14,7 @@ public class MusicApp3 {
     private SOMMap pitchMap, durationMap, joinMap;
     private SOMTrainer joinTrainer;
     private SOMOutput pitchOutput, durationOutput;
-   private SOMLinker joinLinker;
+    private SOMLinker joinLinker;
     private SOMMusicInput inputPitch, inputDuration;
     
     /**
@@ -28,7 +28,7 @@ public class MusicApp3 {
         pitchOutput = new SOMOutput(pitchMap, inputPitch);
         durationOutput = new SOMOutput(durationMap, inputDuration);
 
-        joinMap = new SOMMap(80,80,4);
+        joinMap = new SOMMap(80,80,8);
         joinLinker = new SOMLinker(pitchOutput, durationOutput);
         joinTrainer = new SOMTrainer(joinMap, joinLinker);
         joinLinker.setHigherSOM(joinTrainer);
