@@ -22,7 +22,7 @@ public class MusicApp3 {
      */
     public MusicApp3(String duration){
         inputDuration = new SOMMusicInput(duration);
-        durationMap = new SOMMap(40,40,8);
+        durationMap = new SOMMap(20,20,8);
         durationTrainer = new SOMTrainer(durationMap, inputDuration);
         
     }
