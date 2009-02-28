@@ -14,8 +14,11 @@ import java.util.Vector;
  */
 public class SOMOutput extends SOMTrainer {
 
+    private boolean ranonce;
+
     public SOMOutput(SOMMap m, SOMInput i){
         super(m, i);
+        ranonce = false;
     }
 
     /**
@@ -23,13 +26,24 @@ public class SOMOutput extends SOMTrainer {
       * it will be run.
       * @param runs	The number of times the training will be run
       */
+    @Override
+    public void start(int n){
+        
+        if(!ranonce){
+            runner = new Thread(this);
+            runner.setPriority(Thread.MIN_PRIORITY);
+            runner.start();
+            try{
+                    runner.join();
+            }catch(Exception e){}
+        }
+    }
+
+    /**
+     * Runs it once
+     */
     public void start(){
-        runner = new Thread(this);
-        runner.setPriority(Thread.MIN_PRIORITY);
-        runner.start();
-        try{
-                runner.join();
-        }catch(Exception e){}
+        start(1);
     }
 
     /**
@@ -39,7 +53,8 @@ public class SOMOutput extends SOMTrainer {
     @SuppressWarnings("unchecked")
     @Override
     public void run(){
-
+        ranonce = true;
+        System.out.println("called");
         //the paramaters that will be used during the training.
         int vectorLength = map.getNode(0,0).getVector().size();
         Vector inputVector;
