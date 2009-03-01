@@ -125,11 +125,12 @@ public class SOMLinker extends SOMInput implements Serializable{
     private Vector joinSources(){ 
 
         Vector joinedVectors = new Vector();
-
+        //loops through all the source outputs
         for(int i=0; i<sourceSOM[0].getOutput().size(); i++){
             SOMVector<Float> tempVector = new SOMVector<Float>();	
             for(int j=0; j<((SOMVector<Float>)sourceSOM[0].getOutput().
                 elementAt(i)).size(); j+=2){
+                //alternate between the sources
                 for(int k=0; k< sourceSOM.length; k++){
                         tempVector.addElement(((SOMVector<Float>)sourceSOM[k].
                         getOutput().elementAt(i)).elementAt(j));
