@@ -10,13 +10,13 @@ import hsom.util.*;
 import java.io.*;
 
 public class MusicApp3 {
-    
+
     private SOMMap pitchMap, durationMap, joinMap, topMap;
     private SOMTrainer topTrainer;
     private SOMOutput pitchOutput, durationOutput, joinOutput;
     private SOMLinker joinLinker, topLinker;
     private SOMMusicInput inputPitch, inputDuration;
-    
+
     /**
      * The sole constructor
      * @param in The name of the input file
@@ -30,11 +30,11 @@ public class MusicApp3 {
         joinLinker = new SOMLinker(pitchOutput, durationOutput);
         joinOutput = new SOMOutput(joinMap, joinLinker);
         joinLinker.setHigherSOM(joinOutput);
-	topMap = new SOMMap(30,30,8);
+        topMap = new SOMMap(30,30,8);
         topLinker = new SOMLinker(joinOutput);
         topTrainer = new SOMTrainer(topMap, topLinker);
         topLinker.setHigherSOM(topTrainer);
-        
+
     }
 
     /**
@@ -55,6 +55,7 @@ public class MusicApp3 {
             System.out.println(e);
         }
     }
+
     
     /** The functions that starts the training
        * @param	iterations	the number of times to train
@@ -62,11 +63,22 @@ public class MusicApp3 {
     public void start(int iterations){
 
         topTrainer.start(iterations);
-
+        /*
+        for(int i=0; i<durationMap.getWidth(); i++){
+            for(int j=0; j<durationMap.getHeight(); j++){
+                System.out.println(i + "," + j + " - ");
+                String[] links = durationMap.getNode(i,j).getLinks(true);
+                for(int k=0; k<links.length; k++){
+                    System.out.print("<" + links[k] + "> ");
+                }
+                System.out.println("");
+            }
+        }
+        */
     }
     
-     /** Writes the map into a file
-       * @param	filename	the name of the output file
+   /** Writes the map into a file
+       * @param filename        the name of the output file
        */
     @SuppressWarnings("empty-statement")
     public void writeMap(String filename){
@@ -82,7 +94,7 @@ public class MusicApp3 {
 
         }catch(Exception e){};
     }
-    
+
     /**
      * Prints out the input values, used for testing.
      */
@@ -91,10 +103,10 @@ public class MusicApp3 {
         //for(int i=0; i<inputs.size(); i++){
         //    System.out.println(inputs.get(i));
         //}
-        
+
     }
-    
-    
+
+
     /**
      * The main function
      * @param args The arguments, two file names.
@@ -103,8 +115,9 @@ public class MusicApp3 {
         final MusicApp3 app = new MusicApp3(args[0], args[1], args[2]);
         //app.printInputs();
         app.start(1000);
-	if(args[3] == null) args[3] = "defaultoutput.txt";
+        if(args[3] == null) args[3] = "defaultoutput.txt";
         app.writeMap(args[3]);
     }
+
 
 }

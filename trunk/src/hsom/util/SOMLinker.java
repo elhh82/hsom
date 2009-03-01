@@ -105,7 +105,7 @@ public class SOMLinker extends SOMInput implements Serializable{
             for(int j = 0; j < tempVector.size(); j+=2){
                 int x = (int)(tempVector.elementAt(j)*sourceSOM[sourceNumber].getMap().getHeight());
                 int y = (int)(tempVector.elementAt(j+1)*sourceSOM[sourceNumber].getMap().getWidth());
-                nodes[i][counter] = sourceSOM[0].getMap().getNode(x,y);
+                nodes[i][counter] = sourceSOM[sourceNumber].getMap().getNode(x,y);
                 counter++;
                 if(sourceSOM.length == 2) sourceNumber = (sourceNumber == 0) ? 1 : 0;
             }            
