@@ -30,7 +30,7 @@ public class MusicApp3 {
         joinLinker = new SOMLinker(pitchOutput, durationOutput);
         joinOutput = new SOMOutput(joinMap, joinLinker);
         joinLinker.setHigherSOM(joinOutput);
-        topMap = new SOMMap(60,60,8);
+	topMap = new SOMMap(40,40,8);
         topLinker = new SOMLinker(joinOutput);
         topTrainer = new SOMTrainer(topMap, topLinker);
         topLinker.setHigherSOM(topTrainer);
