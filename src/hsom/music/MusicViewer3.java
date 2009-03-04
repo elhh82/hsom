@@ -49,7 +49,7 @@ public class MusicViewer3 extends JFrame{
     private void paint(){
                 
         durationSOM = new JFrame("The duration SOM");
-        durationSOM.setResizable(false);
+        durationSOM.setResizable(true);
         durationSOM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         durationSOM.add(durationRenderer.getPanel());
         durationSOM.pack();		
