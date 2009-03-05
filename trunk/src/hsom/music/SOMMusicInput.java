@@ -20,6 +20,7 @@
     private float min = 0;
 
     private BufferedReader inputBuffer;
+    private BufferedWriter outputBuffer;
     
     /**
       * The one argument constructor
@@ -32,6 +33,12 @@
         findRange(inFile);
         setInput(parseFile(inFile));
 
+    }
+
+    public SOMMusicInput(String srcFile, String predFile){
+        super();
+        findRange(srcFile);
+        setInput(parseFile(predFile));
     }
 
     /** We read the whole file and wrap it around a BufferedReader
@@ -81,6 +88,31 @@
         min = mn;
         range = mx - mn;
         
+    }
+
+    /** Converts the vector inside the SOM back into its original input format
+     *
+     * @param in  The vector containint the SOM weights
+     */
+    @SuppressWarnings("unchecked")
+    public void revert(Vector in, String outFile){
+        try{
+            FileWriter file = new FileWriter(outFile, true);
+            outputBuffer = new BufferedWriter(file);
+
+            for(int i=0; i<in.size(); i++){
+                SOMVector<Float> curNodes = (SOMVector<Float>)in.elementAt(i);
+                MusicVector<Float> output = new MusicVector<Float>();
+                for(int j=0; j<curNodes.size(); j++){
+                    output.addElement(curNodes.elementAt(j)*range + min);
+                }
+                outputBuffer.write("Prediction " + i + ": " + output.toString() + '\n');
+
+            }
+            outputBuffer.close();
+        }catch (IOException e){
+            System.out.println("Problem opening the file: \""	+ outFile + "\" for writing.");
+        }
     }
     
     /** Here we parse the input file and put it into the vectors
