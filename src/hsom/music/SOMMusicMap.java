@@ -8,8 +8,9 @@ package hsom.music;
 
 import hsom.core.*;
 import java.util.Vector;
-import java.util.Random;
+//import java.util.Random;
 import java.io.*;
+//import java.text.DecimalFormat;
 
 public class SOMMusicMap implements Serializable{
     
@@ -191,7 +192,81 @@ public class SOMMusicMap implements Serializable{
     public String getLabel(int x, int y){
         return labels[x][y];
     }
-    
+
+    /**
+     * Returns the contents of the nodes
+     * @param nodes a list of nodes in vector form
+     * @return The contents of the nodes provided
+     */
+    @SuppressWarnings("unchecked")
+    public Vector getNodeContents(Vector nodes){
+        Vector contents = new Vector();
+        for(int i=0; i<nodes.size(); i++){
+            SOMVector<Float> curNodes = (SOMVector<Float>)nodes.elementAt(i);
+            MusicVector<Float> temp = new MusicVector<Float>();
+            for(int j=0; j<curNodes.size(); j+=2){                
+                SOMNode node = map.getNode(new Float(curNodes.elementAt(j)*map.getWidth()).intValue(),
+                                           new Float(curNodes.elementAt(j+1)*map.getHeight()).intValue());
+                temp.addAll(temp.size(), node.getVector());
+            }
+            contents.addElement(temp);
+        }
+        return contents;
+    }
+
+    /**
+     * Returns the lower nodes of a node with one source som below it
+     * @param nodes the list of nodes in vector form
+     * @return the lower nodes
+     */
+    @SuppressWarnings("unchecked")
+    public Vector getLowerNodes(Vector nodes){
+        Vector lowerNodes = new Vector();
+        for(int i=0; i<nodes.size(); i++){
+             SOMVector<Float> curNodes = (SOMVector<Float>)nodes.elementAt(i);
+             SOMVector<Float> temp = new SOMVector<Float>();
+             for(int j=0; j<curNodes.size(); j+=2){
+                SOMNode node = map.getNode(new Float(curNodes.elementAt(j)*map.getWidth()).intValue(),
+                                           new Float(curNodes.elementAt(j+1)*map.getHeight()).intValue());
+                temp.addAll(temp.size(), node.getVector());
+             }
+             lowerNodes.addElement(temp);
+        }
+        return lowerNodes;
+    }
+    /**
+     * Returns the nodes from the 2 joined lower soms.
+     * @param nodes the list of nodes in vector form
+     * @return The 2 vectors containing the corresponding nodes in the lower soms
+     */
+    @SuppressWarnings("unchecked")
+    public Vector[] getJoinedLowerNodes(Vector nodes){
+        Vector contents[] = new Vector[2];
+        contents[0] = new Vector();
+        contents[1] = new Vector();
+       for(int i=0; i<nodes.size(); i++){
+            SOMVector<Float> curNodes = (SOMVector<Float>)nodes.elementAt(i);
+            SOMVector<Float> temp1 = new SOMVector<Float>();
+            SOMVector<Float> temp2 = new SOMVector<Float>();
+            for(int j=0; j<curNodes.size(); j+=2){
+                SOMNode node = map.getNode(new Float(curNodes.elementAt(j)*map.getWidth()).intValue(),
+                                           new Float(curNodes.elementAt(j+1)*map.getHeight()).intValue());
+                SOMVector<Float> nodeContent = node.getVector();
+                for(int k=0; k<nodeContent.size(); k+=4){
+                    temp1.addElement(nodeContent.elementAt(k));
+                    temp1.addElement(nodeContent.elementAt(k+1));
+                    temp2.addElement(nodeContent.elementAt(k+2));
+                    temp2.addElement(nodeContent.elementAt(k+3));
+                }
+            }
+            contents[0].addElement(temp1);
+            contents[1].addElement(temp2);
+        }
+
+        return contents;
+    }
+
+    /*
     //obtains a predicted downlink using outputs from the SOMPredictor
     @SuppressWarnings("unchecked")
     public String[] getPredictedNodes(Vector predictorOutputs, int xRange, int yRange){
@@ -205,17 +280,14 @@ public class SOMMusicMap implements Serializable{
                 int x = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2)*map.getWidth()).intValue();
                 int y = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2+1)*map.getHeight()).intValue();
                 String[] links = map.getNode(x,y).getLinks(false);
-                /*System.out.println(j + ": ");
-                for(int k=0; k<links.length; k++){
-                    System.out.println(k +": " + links[k]);
-                }*/
+               
                 String prediction = getPredictedLink(links);
                 //if the prediction is a blank, replaces with the contents of the node
                 if(prediction.compareTo("") == 0){
                     SOMVector<Float> nodeContents = map.getNode(x,y).getVector();
                     for(int k=0; k<nodeContents.size(); k+=2){
                         prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k) * xRange);
-                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k) * yRange) + ",";
+                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k+1) * yRange) + ",";
                     }
                     prediction = prediction.substring(0,prediction.length()-1);
                 }
@@ -228,6 +300,45 @@ public class SOMMusicMap implements Serializable{
         //we return one set of links for each predictor output in a string
          return output;
     }
+    */
+    /*
+    //obtains a predicted downlink using outputs from the SOMPredictor
+    @SuppressWarnings("unchecked")
+    public String[] getPredictedNodes(Vector predictorOutputs, int xRange1, int yRange1, int xRange2, int yRange2){
+         String[] output = new String[predictorOutputs.size()];
+         for(int i=0; i<predictorOutputs.size(); i++){
+            //first we find the nodes
+            int numNodes = ((SOMVector<Float>)predictorOutputs.get(i)).size()/2;
+            //System.out.println((SOMVector<Float>)predictorOutputs.get(i));
+            String predictedCoordinates = "";
+            for(int j=0; j<numNodes; j++){
+                int x = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2)*map.getWidth()).intValue();
+                int y = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j*2+1)*map.getHeight()).intValue();
+                String[] links = map.getNode(x,y).getLinks(false);
+                
+                String prediction = getPredictedLink(links);
+                //if the prediction is a blank, replaces with the contents of the node
+                if(prediction.compareTo("") == 0){
+                    SOMVector<Float> nodeContents = map.getNode(x,y).getVector();
+                    for(int k=0; k<nodeContents.size(); k+=4){
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k) * xRange1);
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k+1) * yRange1);
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k+2) * xRange2);
+                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k+3) * yRange2) + ",";
+                    }
+                    prediction = prediction.substring(0,prediction.length()-1);
+                }
+                predictedCoordinates = predictedCoordinates + "," + prediction;              
+            }
+            predictedCoordinates = predictedCoordinates.substring(1);
+            //System.out.println(predictedCoordinates);
+            output[i] = predictedCoordinates;
+        }
+        //we return one set of links for each predictor output in a string
+         return output;
+    }
+
+
     
     //obtains a predicted downlink using a set of downlinks predicted from the higher som
     public String[] getPredictedNodes(String[] nodeList, int xRange, int yRange){
@@ -242,11 +353,10 @@ public class SOMMusicMap implements Serializable{
                 String prediction = getPredictedLink(links);
                 //if the prediction is a blank, replaces with the contents of the node
                 if(prediction.compareTo("") == 0){
-                    System.out.println("waaaaaaaa");
                     SOMVector<Float> nodeContents = map.getNode(x,y).getVector();
                     for(int k=0; k<nodeContents.size(); k+=2){
                         prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k) * xRange);
-                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k) * yRange) + ",";
+                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k+1) * yRange) + ",";
                     }
                     prediction = prediction.substring(0,prediction.length()-1);
                 }
@@ -258,7 +368,40 @@ public class SOMMusicMap implements Serializable{
         }
         return output;
     }
-    
+
+    //obtains a predicted downlink using a set of downlinks predicted from the higher som
+    public String[] getPredictedNodes(String[] nodeList, int xRange1, int yRange1, int xRange2, int yRange2){
+        String[] output = new String[nodeList.length];
+        for(int i=0; i<nodeList.length; i++){
+            String predictedCoordinates = "";
+            String[] coordinates = nodeList[i].split(",");
+            for(int j=0; j<coordinates.length; j+=2){
+                int x = Integer.parseInt(coordinates[j]);
+                int y = Integer.parseInt(coordinates[j+1]);
+                String[] links = map.getNode(x,y).getLinks(false);
+                String prediction = getPredictedLink(links);
+                //if the prediction is a blank, replaces with the contents of the node
+                if(prediction.compareTo("") == 0){
+                    System.out.println("waaaaaaaakaka");
+                    SOMVector<Float> nodeContents = map.getNode(x,y).getVector();
+                    for(int k=0; k<nodeContents.size(); k+=4){
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k) * xRange1);
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k+1) * yRange1);
+                        prediction = prediction + "" + java.lang.Math.round(nodeContents.get(k+2) * xRange2);
+                        prediction = prediction + "," + java.lang.Math.round(nodeContents.get(k+3) * yRange2) + ",";
+                    }
+                    prediction = prediction.substring(0,prediction.length()-1);
+                }
+                predictedCoordinates = predictedCoordinates + "," + prediction;
+            }
+            predictedCoordinates = predictedCoordinates.substring(1);
+            //System.out.println(predictedCoordinates);
+            output[i] = predictedCoordinates;
+        }
+        return output;
+    }
+    */
+    /*
     //does the actual prediction
     public String getPredictedLink(String[] links){
         int numLinks = links.length;
@@ -298,23 +441,24 @@ public class SOMMusicMap implements Serializable{
     }  
     
     //obtains the contents of the node based on the node list given
-    public String[] getPrediction(String[] nodeList, int range){
+    public String[] getPrediction(String[] nodeList, float range, float shift){
         for(int i=0; i<nodeList.length; i++){
             String[] coordinates = nodeList[i].split(",");
             for(int j=0; j<coordinates.length; j+=2){
                 String curOutput = getNodeContents(Integer.parseInt(coordinates[j]),
                                                    Integer.parseInt(coordinates[j+1]),
-                                                   range); 
+                                                   range, shift);
                 System.out.println(curOutput);
             }
             
         }
         return null;
     }
-    
+    */
+    /*
     //obtains a predicted downlink using outputs from the SOMPredictor
     @SuppressWarnings("unchecked")
-    public String[] getPrediction(Vector predictorOutputs, int range){
+    public String[] getPrediction(Vector predictorOutputs, float range, float shift){
          String[] output = new String[predictorOutputs.size()];
          for(int i=0; i<predictorOutputs.size(); i++){
             //first we find the nodes
@@ -324,7 +468,7 @@ public class SOMMusicMap implements Serializable{
             for(int j=0; j<((SOMVector<Float>)predictorOutputs.get(i)).size(); j+=2){
                 int x = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j)*map.getWidth()).intValue();
                 int y = new Float(((SOMVector<Float>)predictorOutputs.get(i)).get(j+1)*map.getHeight()).intValue();
-                String curOutput = getNodeContents(x,y,range);
+                String curOutput = getNodeContents(x,y,range, shift);
                 System.out.println(curOutput);
                 
             }
@@ -333,13 +477,13 @@ public class SOMMusicMap implements Serializable{
     }
     
     //get the contents of the specified node
-    public String getNodeContents(int x, int y, int range){
+    public String getNodeContents(int x, int y, float range, float shift){
         String output = "";
         SOMVector<Float> weights = map.getNode(x,y).getVector();
+        DecimalFormat df = new DecimalFormat("#00.0");
         for(int i=0; i<weights.size(); i++){
-            output = output + "," + weights.get(i) * range;
+            output = output + "," + df.format(((weights.get(i) * range) + shift));
         }
         return output.substring(1);
-    }
-
+    }*/
 }

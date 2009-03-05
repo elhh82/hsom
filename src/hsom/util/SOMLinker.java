@@ -123,7 +123,6 @@ public class SOMLinker extends SOMInput implements Serializable{
       */
     @SuppressWarnings("unchecked")
     private Vector joinSources(){ 
-
         Vector joinedVectors = new Vector();
         //loops through all the source outputs
         for(int i=0; i<sourceSOM[0].getOutput().size(); i++){
@@ -141,7 +140,6 @@ public class SOMLinker extends SOMInput implements Serializable{
             }	
             joinedVectors.addElement(tempVector);
         }
-
         return joinedVectors;
 
     }

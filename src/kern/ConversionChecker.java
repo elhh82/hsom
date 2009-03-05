@@ -84,24 +84,24 @@ public class ConversionChecker {
      * The file name to output the broken inputs to
      * @param file breaks the inputs into string of 16.
      */
-    public void breakInto32(String file){
+    public void breakInto32(String infile, String outfile){
         try{
-            BufferedWriter output = new BufferedWriter(new FileWriter(file));
-            BufferedReader input = new BufferedReader(new FileReader(cleanOutput));
+            BufferedWriter output = new BufferedWriter(new FileWriter(outfile));
+            BufferedReader input = new BufferedReader(new FileReader(infile));
             String s;
             while((s = input.readLine()) != null ){
                  String[] sr = s.split(" ");
                  String[] notes = sr[1].split(",");
                  
-                 for(int i=0; i+32<notes.length; i++){
-                     output.write(sr[0] + "-" + (int)(i/32) + " ");
+                 for(int i=0; i<notes.length; i++){
+                     output.write(sr[0] + "-" + (int)(i/16) + " ");
                      output.write(notes[i]);                     
-                     for(int j=1; j<64; j++){
+                     for(int j=1; j<16; j++){
                          output.write(",");
                          output.write(notes[i+j]);    
                      }
                      output.write('\n');
-                     i+=31;
+                     i+=15;
                  }
             }
             output.flush();
@@ -182,7 +182,7 @@ public class ConversionChecker {
      */
     public static void main(String args[]){
         ConversionChecker cc = new ConversionChecker(args[0]);
-        if(args.length >= 3){
+       /* if(args.length >= 3){
             cc.setOutputFiles(args[1], args[2]);
             
         }
@@ -192,7 +192,8 @@ public class ConversionChecker {
         }
         if(args.length >= 5){
             cc.removeRests(args[3],args[4]);
-        }
+        }*/
+        cc.breakInto32(args[0], args[1]);
         
     }
     
