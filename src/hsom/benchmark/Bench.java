@@ -12,9 +12,9 @@ import hsom.music.*;
 public class Bench {    
     
     public static void main(String args[]){
-        final MusicApp bench = new MusicApp(args[0], args[1]);
+        final MusicApp3 bench = new MusicApp3(args[0], args[1], args[2]);
         long before = System.currentTimeMillis() ;
-        bench.start(Integer.parseInt(args[1]));
+        bench.start(1000);
         long after = System.currentTimeMillis() ;
         long elapsed = after - before ;
         System.out.println("Start Time: " + before);
