@@ -1,6 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+
+/**
+ * Extends the SOM Trainer, doesn't do any actual training, just runs the input
+ * through the map to obtain the output BMU nodes.
+ * @author Edwin Law Hui Hean
  */
 
 package hsom.util;
@@ -8,13 +10,9 @@ package hsom.util;
 import hsom.core.*;
 import java.util.Vector;
 
-/**
- *
- * @author elhh
- */
 public class SOMOutput extends SOMTrainer {
 
-    private boolean ranonce;
+    protected boolean ranonce;
 
     public SOMOutput(SOMMap m, SOMInput i){
         super(m, i);
