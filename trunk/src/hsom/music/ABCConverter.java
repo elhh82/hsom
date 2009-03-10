@@ -44,8 +44,8 @@ public class ABCConverter {
                 for(int i=0; i<pitchValues.length; ){                
                     //find the length of the note
                     int noteLength = 1;
-                    for(int j=i/2+1; j<durationValues.length; j++){
-                        if(Float.parseFloat(durationValues[j]) == 1.0) break;
+                    for(int j=i+1; j<durationValues.length; j++){
+                        if(new Float(durationValues[j]).intValue() == 1) break;
                         else noteLength++;
                     }
                     //find the pitch of the note
@@ -63,7 +63,9 @@ public class ABCConverter {
                     melody = melody + " " + note;
                     i += noteLength;  
                     //add a bar line
-                    if(i % 16 == 0) melody = melody + " |";
+                    if(i % 8 == 0) melody = melody + " |";
+                    //adds a carriage return 
+                    if(i % 16 == 0 && i < pitchValues.length) melody = melody + '\n';
                 }
                 //adds a double barline
                 melody = melody + "|";
@@ -88,19 +90,20 @@ public class ABCConverter {
         int octave = 0, intPitch = 0;
         //determine the octave
         float decimalValue = pitch - new Float(pitch).intValue();
-        if(decimalValue == 0.2){
-            intPitch = new Float(pitch).intValue();
-            octave = 1;            
-        }
-        else if(decimalValue == 0.8){
-            intPitch = new Float(pitch).intValue() + 1;
-            octave = -1;
-        }
-        else if(decimalValue == 0.0){
+        if(decimalValue == 0.0){
             intPitch = new Float(pitch).intValue();
             octave = 0;
         }
+        else if(decimalValue < 0.5){
+            intPitch = new Float(pitch).intValue();
+            octave = 1;            
+        }
+        else if(decimalValue > 0.8){
+            intPitch = new Float(pitch).intValue() + 1;
+            octave = -1;
+        }
         else{
+            System.out.println(decimalValue + " " + pitch);
             System.out.println("Unexpected pitch value in the input set");
         }
         
