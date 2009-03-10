@@ -9,18 +9,16 @@ import java.io.*;
 
 public class ABCConverter {
     
-    BufferedReader pitchReader;
-    BufferedReader durationReader;
+    BufferedReader predictionReader;
     
     /**
      * Constructor for the ABC Converter, reads the two input files
      * @param pitch the pitch file
      * @param duration the duration file
      */
-    public ABCConverter(String pitch, String duration){
+    public ABCConverter(String predicted){
         try{
-            pitchReader = new BufferedReader(new FileReader(pitch));
-            durationReader = new BufferedReader(new FileReader(duration));
+            predictionReader = new BufferedReader(new FileReader(predicted));
         }
         catch(Exception e){
             System.out.println(e);
@@ -30,28 +28,28 @@ public class ABCConverter {
     /**
      * Goes through the input files and extract the notes
      */
-    private void parseNotes(String outputDirectory){
+    private void parseNotes(){
         try{     
-            String pitchLine;
-            while((pitchLine = pitchReader.readLine()) != null){
-                String[] pitch = pitchLine.split(" ");
-                String[] duration = durationReader.readLine().split(" ");
-                //find the filename
-                String[] temp = pitch[0].split("\\W");
-                String filename = temp[temp.length-3] + "-" + temp[temp.length-1];
+            String line;
+            while((line = predictionReader.readLine()) != null){
+                String[] pitch = line.split(" ");
+                String[] duration = predictionReader.readLine().split(" ");
+                
                 //find the actual notes and its length
-                String[] pitchValues = pitch[1].split(",");
-                String[] durationValues = duration[1].split(","); 
+                String[] pitchValues = pitch[2].substring(1,pitch[2].length()-1).split(",");
+                String[] durationValues = duration[2].substring(1,duration[2].length()-1).split(",");
+                
+                
                 String melody = "";
                 for(int i=0; i<pitchValues.length; ){                
                     //find the length of the note
                     int noteLength = 1;
                     for(int j=i/2+1; j<durationValues.length; j++){
-                        if(durationValues[j].equals("1")) break;
+                        if(Float.parseFloat(durationValues[j]) == 1.0) break;
                         else noteLength++;
                     }
                     //find the pitch of the note
-                    String note = getPitch(pitchValues[i], pitchValues[i+1]);               
+                    String note = getPitch(Float.parseFloat(pitchValues[i]));               
 
                     switch(noteLength){
                         case 1: note = note + "1/2"; break;
@@ -63,13 +61,14 @@ public class ABCConverter {
                         default: System.out.println("Note length error");
                     }               
                     melody = melody + " " + note;
-                    i += noteLength*2;  
+                    i += noteLength;  
                     //add a bar line
                     if(i % 16 == 0) melody = melody + " |";
                 }
                 //adds a double barline
                 melody = melody + "|";
                 System.out.println(melody);
+                 
             }
         }
         catch(Exception e){
@@ -83,12 +82,30 @@ public class ABCConverter {
      * @param octave
      * @return the pitch in ABC format
      */
-    private String getPitch(String pitch, String octave){
+    private String getPitch(float pitch){
         
         String output = "";
+        int octave = 0, intPitch = 0;
+        //determine the octave
+        float decimalValue = pitch - new Float(pitch).intValue();
+        if(decimalValue == 0.2){
+            intPitch = new Float(pitch).intValue();
+            octave = 1;            
+        }
+        else if(decimalValue == 0.8){
+            intPitch = new Float(pitch).intValue() + 1;
+            octave = -1;
+        }
+        else if(decimalValue == 0.0){
+            intPitch = new Float(pitch).intValue();
+            octave = 0;
+        }
+        else{
+            System.out.println("Unexpected pitch value in the input set");
+        }
         
-        if(Integer.parseInt(octave) == 0){
-            switch(Integer.parseInt(pitch)){
+        if(octave == 0){
+            switch(intPitch){
                 case 0: output = "^C"; break;
                 case 1: output = "^G"; break;
                 case 2: output = "^D"; break;
@@ -103,8 +120,8 @@ public class ABCConverter {
                 case 11: output = "^F"; break;
             }                    
         }
-        else if(Integer.parseInt(octave) == 1){
-            switch(Integer.parseInt(pitch)){
+        else if(octave == 1){
+            switch(intPitch){
                 case 0: output = "^c"; break;
                 case 1: output = "^g"; break;
                 case 2: output = "^d"; break;
@@ -119,8 +136,8 @@ public class ABCConverter {
                 case 11: output = "^f"; break;
             }            
         }
-        else if(Integer.parseInt(octave) == -1){
-            switch(Integer.parseInt(pitch)){
+        else if(octave == -1){
+            switch(intPitch){
                 case 0: output = "^C,"; break;
                 case 1: output = "^G,"; break;
                 case 2: output = "^D,"; break;
@@ -133,7 +150,7 @@ public class ABCConverter {
                 case 9: output = "E,"; break;
                 case 10: output = "B,"; break;
                 case 11: output = "^F,"; break;
-            } 
+          } 
         }
         
         return output;
@@ -144,7 +161,7 @@ public class ABCConverter {
      * @param args 3 arguments, the 2 input files and the output directory
      */
     public static void main(String[] args){
-        ABCConverter converter = new ABCConverter(args[0], args[1]);
-        converter.parseNotes(args[2]);
+        ABCConverter converter = new ABCConverter(args[0]);
+       converter.parseNotes();
     }
 }
