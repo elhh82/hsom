@@ -13,7 +13,8 @@
  
  
  public class SOMMusicInput extends SOMInput{
-	 
+
+    private Vector<boolean[]> mask;
     // The range of our input values for the Music SOM 
     private float range = 1;
     private float max = 0;
@@ -143,8 +144,14 @@
                 //tokenizer.nextToken();	
 
                 //add each element in the line into a SOMVector
-                while(tokenizer.hasMoreTokens()){	
-                    float weight = (Float.parseFloat(tokenizer.nextToken()) - (float)min)/range;										
+                while(tokenizer.hasMoreTokens()){
+                    String token = tokenizer.nextToken();
+                    float weight;
+                    try{
+                        weight = (Float.parseFloat(token) - (float)min)/range;
+                    }catch(NumberFormatException e){
+                        weight = Float.NaN;
+                    }
                     inputLine.addElement(weight);
                 }
                 //add each SOMVcetor into the main input Vector				
@@ -156,6 +163,52 @@
         }	
 
         return in;	
+    }
+
+    /**
+     * Sets the mask according to the input values that have been read.
+     * True if the value is available, false if the value is blank.
+     */
+    @SuppressWarnings("unchecked")
+    private void setMask(){
+        mask = new Vector();
+        Vector input = super.getInput();
+        for(int i=0; i<input.size(); i++){
+            SOMVector<Float> curInput = (SOMVector<Float>)input.elementAt(i);
+            boolean[] m = new boolean[curInput.size()];
+            for(int j=0; j<curInput.size(); j++){
+                if(curInput.elementAt(j).isNaN()){
+                    m[j] = false;
+                }
+                else{
+                    m[j] = true;
+                }
+            }
+            mask.addElement(m);
+        }
+    }
+
+    /**
+     * Returns the mask for the partial matching
+     * @return  The mask used for partial matching
+     */
+    public Vector<boolean[]> getMask(){
+        return mask;
+    }
+
+    /**
+     * Overrides the getAdjustedInput method in the SOMInput class
+     * @param outputLength  The length of the adjusted input
+     * @return  A vector of inputs adjusted to the specified length
+     */
+    @Override
+    public Vector getAdjustedInput(int outputLength){
+        Vector adjustedInput = super.getAdjustedInput(outputLength);
+        Vector temp = super.getInput();
+        setInput(adjustedInput);
+        setMask();
+        setInput(temp);
+        return adjustedInput;
     }
 
  }

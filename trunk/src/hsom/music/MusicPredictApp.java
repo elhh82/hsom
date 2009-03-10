@@ -14,7 +14,8 @@ public class MusicPredictApp {
 
     private SOMMap pitchMap, durationMap, topMap, joinMap;
     private SOMMusicMap pitchMusicMap, durationMusicMap, topMusicMap, joinMusicMap;
-    private SOMOutput pitchOutput, durationOutput, joinOutput, topOutput;
+    private SOMMusicOutput pitchOutput, durationOutput;
+    private SOMOutput joinOutput, topOutput;
     private SOMMusicInput  predictPitch, predictDuration;
     private SOMLinker joinLinker, topLinker;
 
@@ -26,8 +27,8 @@ public class MusicPredictApp {
         readMaps(maps);
         predictPitch = new SOMMusicInput(srcPitch,predPitch);
         predictDuration = new SOMMusicInput(srcDuration, predDuration);
-        pitchOutput = new SOMOutput(pitchMap, predictPitch);
-        durationOutput = new SOMOutput(durationMap, predictDuration);
+        pitchOutput = new SOMMusicOutput(pitchMap, predictPitch);
+        durationOutput = new SOMMusicOutput(durationMap, predictDuration);
         joinLinker = new SOMLinker(pitchOutput, durationOutput);
         joinOutput = new SOMOutput(joinMap, joinLinker);
         joinLinker.setHigherSOM(joinOutput);
