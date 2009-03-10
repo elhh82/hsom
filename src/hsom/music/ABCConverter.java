@@ -28,10 +28,21 @@ public class ABCConverter {
     /**
      * Goes through the input files and extract the notes
      */
-    private void parseNotes(){
+    private void parseNotes(String folder){
         try{     
             String line;
+            FileWriter file;
+            BufferedWriter outputBuffer;
+            int outputCount = 1;
+            String outputHeader;
             while((line = predictionReader.readLine()) != null){
+                outputHeader =  "% HSOM Predicted Output\n" +
+                                "X:1\nT:HSOM Prediction " +
+                                outputCount + "\n" +
+                                "K:c\n";
+
+                file = new FileWriter(folder + "//output"+outputCount++ + ".abc");
+                outputBuffer = new BufferedWriter(file);
                 String[] pitch = line.split(" ");
                 String[] duration = predictionReader.readLine().split(" ");
                 
@@ -69,7 +80,9 @@ public class ABCConverter {
                 }
                 //adds a double barline
                 melody = melody + "|";
-                System.out.println(melody);
+                outputBuffer.write(outputHeader);
+                outputBuffer.write(melody);
+                outputBuffer.close();
                  
             }
         }
@@ -165,6 +178,6 @@ public class ABCConverter {
      */
     public static void main(String[] args){
         ABCConverter converter = new ABCConverter(args[0]);
-       converter.parseNotes();
+       converter.parseNotes(args[1]);
     }
 }
