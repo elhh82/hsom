@@ -10,6 +10,7 @@ import java.io.*;
 public class ABCConverter {
     
     BufferedReader predictionReader;
+    String inputFile;
     
     /**
      * Constructor for the ABC Converter, reads the two input files
@@ -18,7 +19,8 @@ public class ABCConverter {
      */
     public ABCConverter(String predicted){
         try{
-            predictionReader = new BufferedReader(new FileReader(predicted));
+            inputFile = predicted;
+            predictionReader = new BufferedReader(new FileReader(inputFile));
         }
         catch(Exception e){
             System.out.println(e);
@@ -30,21 +32,34 @@ public class ABCConverter {
      */
     private void parseNotes(String folder){
         try{     
-            String line;
+            String line[];
             FileWriter file;
             BufferedWriter outputBuffer;
             int outputCount = 1;
             String outputHeader;
-            while((line = predictionReader.readLine()) != null){
+            int numLines = 0;
+            //count how many total lines to read
+            while(predictionReader.readLine() != null){
+                numLines++;
+            }
+            line = new String[numLines];
+            predictionReader.close();
+            predictionReader = new BufferedReader(new FileReader(inputFile));
+            for(int i=0; i<numLines; i++){
+                line[i] = predictionReader.readLine();
+            }
+            predictionReader.close();
+            for(int i=0; i<numLines/2; i++){
                 outputHeader =  "% HSOM Predicted Output\n" +
                                 "X:1\nT:HSOM Prediction " +
                                 outputCount + "\n" +
+                                "Q:1/8=120\n"+
                                 "K:c\n";
 
                 file = new FileWriter(folder + "//output"+outputCount++ + ".abc");
                 outputBuffer = new BufferedWriter(file);
-                String[] pitch = line.split(" ");
-                String[] duration = predictionReader.readLine().split(" ");
+                String[] pitch = line[i].split(" ");
+                String[] duration = line[i+numLines/2].split(" ");
                 
                 //find the actual notes and its length
                 String[] pitchValues = pitch[2].substring(1,pitch[2].length()-1).split(",");
@@ -52,15 +67,15 @@ public class ABCConverter {
                 
                 
                 String melody = "";
-                for(int i=0; i<pitchValues.length; ){                
+                for(int j=0; j<pitchValues.length; ){
                     //find the length of the note
                     int noteLength = 1;
-                    for(int j=i+1; j<durationValues.length; j++){
-                        if(new Float(durationValues[j]).intValue() == 1) break;
+                    for(int k=j+1; k<durationValues.length; k++){
+                        if(new Float(durationValues[k]).intValue() == 1) break;
                         else noteLength++;
                     }
                     //find the pitch of the note
-                    String note = getPitch(Float.parseFloat(pitchValues[i]));               
+                    String note = getPitch(Float.parseFloat(pitchValues[j]));
 
                     switch(noteLength){
                         case 1: note = note + "1/2"; break;
@@ -69,17 +84,17 @@ public class ABCConverter {
                         case 4: note = note + "2"; break;
                         case 6: note = note + "3"; break;
                         case 8: note = note + "4"; break;
-                        default: System.out.println("Note length error");
+                        default: System.out.println("Note length error " + noteLength);
                     }               
                     melody = melody + " " + note;
-                    i += noteLength;  
+                    j += noteLength;
                     //add a bar line
-                    if(i % 8 == 0) melody = melody + " |";
+                    if(j % 8 == 0) melody = melody + " |";
                     //adds a carriage return 
-                    if(i % 16 == 0 && i < pitchValues.length) melody = melody + '\n';
+                    if(j % 16 == 0 && j < pitchValues.length) melody = melody + '\n';
                 }
                 //adds a double barline
-                melody = melody + "|";
+                melody = melody + "|" + "\n";
                 outputBuffer.write(outputHeader);
                 outputBuffer.write(melody);
                 outputBuffer.close();
@@ -107,11 +122,11 @@ public class ABCConverter {
             intPitch = new Float(pitch).intValue();
             octave = 0;
         }
-        else if(decimalValue < 0.5){
+        else if(decimalValue <= 0.5){
             intPitch = new Float(pitch).intValue();
-            octave = 1;            
+            octave = 1;
         }
-        else if(decimalValue > 0.8){
+        else if(decimalValue > 0.5){
             intPitch = new Float(pitch).intValue() + 1;
             octave = -1;
         }
@@ -168,7 +183,6 @@ public class ABCConverter {
                 case 11: output = "^F,"; break;
           } 
         }
-        
         return output;
     }
     
@@ -178,6 +192,6 @@ public class ABCConverter {
      */
     public static void main(String[] args){
         ABCConverter converter = new ABCConverter(args[0]);
-       converter.parseNotes(args[1]);
+        converter.parseNotes(args[1]);
     }
 }
