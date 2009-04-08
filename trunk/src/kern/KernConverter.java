@@ -209,8 +209,31 @@ public class KernConverter {
         catch(Exception e){
             System.out.println(e);
         }
-    }    
-    
+    }
+
+    /**
+     * Runs the conversion
+     */
+    public void start(){
+        parseFile();
+        convert();
+        durationConvert();
+    }
+
+    /**
+     * Returns the converted durations
+     */
+     public String getDuration(){
+         return durationOutput;
+     }
+
+     /**
+      * Returns the converted pitches
+      */
+     public String getPitch(){
+         return hsomOutput;
+     }
+
     /**
      * Read in 2 file names for the input and output files respectively.
      * @param args The file names
