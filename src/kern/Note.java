@@ -11,6 +11,7 @@ public class Note {
     
     private float duration;
     private String pitch;
+    private String previousPitch;
     
     /**
      * Constructor to create a note with a duration and pitch
@@ -107,21 +108,21 @@ public class Note {
 
         //this part with octave shift standard
         /*
-        convertedNote = "" + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
+        convertedNote = "" + ((getPitchMidi() == 0) ? "99.0" : toSpiralArray(getPitchMidi() - key));
         for(int i=1; i<length; i++){
-            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
+            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99.0" : toSpiralArray(getPitchMidi() - key));
         }*/
 
         //this part without octave shift info
-        /*convertedNote = "" + ((getPitchMidi() == 0) ? "99" : toSpiralArray(getPitchMidi() - key));
+        /*convertedNote = "" + ((getPitchMidi() == 0) ? "99.0" : toSpiralArray(getPitchMidi() - key));
         for(int i=1; i<length; i++){
-            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99" : toSpiralArray(getPitchMidi() - key));
+            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99.0" : toSpiralArray(getPitchMidi() - key));
         }*/
 
         //this part with enhanced octave shift info
-        convertedNote = "" + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
+        convertedNote = "" + ((getPitchMidi() == 0) ? "99.0" : toSpiralArray(getPitchMidi() - key));
         for(int i=1; i<length; i++){
-            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99,0" : toSpiralArray(getPitchMidi() - key));
+            convertedNote = convertedNote + "," + ((getPitchMidi() == 0) ? "99.0" : toSpiralArray(getPitchMidi() - key));
         }
         return convertedNote;
     }
@@ -134,9 +135,9 @@ public class Note {
     public String toHSOMDurationNotation(int minDuration){
         String convertedNote = "";
         int length = getLength(minDuration);
-        convertedNote = "" + 1;
+        convertedNote = "" + ((pitch.charAt(0) == 'r') ? -1 : 1);
         for(int i=1; i<length; i++){
-            convertedNote = convertedNote + "," + 0;
+            convertedNote = convertedNote + "," + ((pitch.charAt(0) == 'r') ? -1 : 0);
         }
         return convertedNote;
     }
@@ -148,7 +149,7 @@ public class Note {
      * @return the converted pitch value
      */
     private String toSpiralArray(int input){
-        
+        System.out.print(input);
         int output = 0;
         String outputString = "";
         int octaveShift;
@@ -206,7 +207,8 @@ public class Note {
         DecimalFormat df = new DecimalFormat("#00.0");
 
         outputString = df.format((double)output + octaveShift/60.0);
-
+        previousPitch = outputString;
+        System.out.println("-" + outputString);
         return outputString;
     }
     

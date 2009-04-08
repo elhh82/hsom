@@ -70,9 +70,19 @@ public class ABCConverter {
                 for(int j=0; j<pitchValues.length; ){
                     //find the length of the note
                     int noteLength = 1;
-                    for(int k=j+1; k<durationValues.length; k++){
-                        if(new Float(durationValues[k]).intValue() == 1) break;
-                        else noteLength++;
+                    if(new Float(durationValues[j]).intValue() == 1){
+                        for(int k=j+1; k<durationValues.length; k++){
+                            float temp = new Float(durationValues[k]).intValue();
+                            if(temp == 1 || temp == -1) break;
+                            else noteLength++;
+                        }
+                    }
+                    else{
+                        for(int k=j+1; k<durationValues.length; k++){
+                            float temp = new Float(durationValues[k]).intValue();
+                            if(temp == 1) break;
+                            else noteLength++;
+                        }
                     }
                     //find the pitch of the note
                     String note = getPitch(Float.parseFloat(pitchValues[j]));
@@ -149,6 +159,7 @@ public class ABCConverter {
                 case 9: output = "E"; break;
                 case 10: output = "B"; break;
                 case 11: output = "^F"; break;
+                case 99: output = "z"; break;
             }                    
         }
         else if(octave == 1){
@@ -165,6 +176,7 @@ public class ABCConverter {
                 case 9: output = "e"; break;
                 case 10: output = "b"; break;
                 case 11: output = "^f"; break;
+                case 99: output = "z"; break;
             }            
         }
         else if(octave == -1){
@@ -181,6 +193,7 @@ public class ABCConverter {
                 case 9: output = "E,"; break;
                 case 10: output = "B,"; break;
                 case 11: output = "^F,"; break;
+                case 99: output = "z"; break;
           } 
         }
         return output;

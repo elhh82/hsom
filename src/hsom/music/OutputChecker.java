@@ -161,7 +161,7 @@ public class OutputChecker {
             histogram[i] = 0;
         }
         for(int i=0;i<pitches.length; i++){
-            int modPitch = getPitch(new Float(pitches[i]))%12;
+            int modPitch = (getPitch(new Float(pitches[i]))+12)%12;
             histogram[modPitch]++;
         }
         return histogram;
@@ -192,6 +192,7 @@ public class OutputChecker {
                     score += diff * diff;
                 }
                 score = 1/(java.lang.Math.sqrt(score)+1);
+                score = java.lang.Math.sqrt(java.lang.Math.sqrt(score));
                 if(score > maxScore){
                     maxScore = score;
                     mostSimilar = j;
@@ -199,10 +200,8 @@ public class OutputChecker {
                 avgScore += score;
             }
             avgScore = avgScore/pitchIn.length;
-            int max = new Float(maxScore*100).intValue();
-            int avg = new Float(avgScore*100).intValue();
             System.out.println("Output " + (i+1) + ": Max Score: " +
-                                max + "% Avg Score: " + avg + "%");
+                                maxScore + "\nAvg Score: " + avgScore);
 
             System.out.println("Most Similar: Input " + (mostSimilar+1) + "\n");
             score = maxScore = avgScore = 0;
@@ -234,6 +233,7 @@ public class OutputChecker {
                     score += diff * diff;
                 }
                 score = 1/(java.lang.Math.sqrt(score)+1);
+                score = java.lang.Math.sqrt(java.lang.Math.sqrt(score));
                 if(score > maxScore){
                     maxScore = score;
                     mostSimilar = j;
@@ -241,10 +241,8 @@ public class OutputChecker {
                 avgScore += score;
             }
             avgScore = avgScore/pitchIn.length;
-            int max = new Float(maxScore*100).intValue();
-            int avg = new Float(avgScore*100).intValue();
             System.out.println("Output " + (i+1) + ": Max Score: " +
-                                max + "% Avg Score: " + avg + "%");
+                                maxScore + "\nAvg Score: " + avgScore);
 
             System.out.println("Most Similar: Input " + (mostSimilar+1) + "\n");
             score = maxScore = avgScore = 0;
@@ -324,6 +322,7 @@ public class OutputChecker {
                     score += diff*diff;
                 }
                 score = 1/ (java.lang.Math.sqrt(score) + 1);
+                score = java.lang.Math.sqrt(java.lang.Math.sqrt(score));
                 if(score > maxScore){
                     maxScore = score;
                     mostSimilar = j;
@@ -331,10 +330,8 @@ public class OutputChecker {
                 avgScore += score;
             }
             avgScore = avgScore/pitchIn.length;
-            int max = new Float(maxScore*100).intValue();
-            int avg = new Float(avgScore*100).intValue();
             System.out.println("Output " + (i+1) + ": Max Score: " +
-                                max + "% Avg Score: " + avg + "%");
+                                maxScore + "\nAvg Score: " + avgScore);
 
             System.out.println("Most Similar: Input " +(mostSimilar+1) + "\n");
             score = maxScore = avgScore = 0;
@@ -420,7 +417,14 @@ public class OutputChecker {
      */
     public static void main(String[] args){
         OutputChecker checker = new OutputChecker(args[0], args[1], args[2]);
-        checker.fullCheck();
+        System.out.println("Euclidean Analysis");
+        checker.fullCheckEuclidean();
+        System.out.println("-------------------------");
+        System.out.println("Contour Analysis");
+        checker.contourCheck();
+        System.out.println("-------------------------");
+        System.out.println("Histogram Analysis");
+        checker.histogramCheck();
         //checker.lineByLineCheck();
         //checker.fullCheckPitch();
     }
