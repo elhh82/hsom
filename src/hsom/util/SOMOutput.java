@@ -64,7 +64,7 @@ public class SOMOutput extends SOMTrainer {
         for(int i=0; i<inputVector.size(); i++){
             //get the first part of the input and find its bmu
             curInput = (SOMVector<Float>)inputVector.elementAt(i);
-            bmu = map.getBMU(curInput);
+            bmu = map.getBMU2(curInput);
             //store the output for this bmu
             curOutput.addElement(new Float((float)bmu.getX()/(float)map.getWidth()));
             curOutput.addElement(new Float((float)bmu.getY()/(float)map.getHeight()));
