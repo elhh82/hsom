@@ -113,7 +113,7 @@ public class SOMMap implements Serializable{
 
         /*Start at map position 0,0 and assume this as the
          *BMU for now.
-         */		 
+         */
         SOMNode bmu = map[0][0];
 
         double bmuDist = input.euclideanDistance(bmu.getVector());
@@ -137,6 +137,50 @@ public class SOMMap implements Serializable{
                 }				
             }			
         }		
+        return bmu;
+
+    }
+
+    /** Finds the Best Matching Unit for the given input vector
+      * This is a modified version of get BMU, we start looking at a random position
+      * @param	input	The input vector where the BMU is to be searched for
+      * @return 		The SOMNode corresponding to the Best Matching Unit
+      */
+    public SOMNode getBMU2(SOMVector<Float> input){
+
+        /*Start at map position 0,0 and assume this as the
+         *BMU for now.
+         */
+        java.util.Random r = new java.util.Random();
+        int randX = r.nextInt(this.getWidth());
+        int randY = r.nextInt(this.getHeight());
+        SOMNode bmu = map[randX][randY];
+
+        double bmuDist = input.euclideanDistance(bmu.getVector());
+        double currentDist;
+
+        // Step through the entire matrix and check the euclidean distance
+        // between the input vector and the input node
+        for (int i=0; i<this.getWidth(); i++){
+
+            for (int j=0; j<this.getHeight(); j++){
+                int ii = i + randX;
+                int jj = j + randY;
+                if(ii >= this.getWidth()) ii = ii - this.getWidth();
+                if(jj >= this.getHeight()) jj = jj - this.getHeight();
+                currentDist = input.euclideanDistance(map[ii][jj].getVector());
+
+                if (currentDist < bmuDist){
+
+                    /*If the distance from the current node to the input vector
+                     *is less than the distance to our current BMU, then set
+                     *the current input as the new BMU.
+                     */
+                    bmu = map[ii][jj];
+                    bmuDist = currentDist;
+                }
+            }
+        }
         return bmu;
 
     }
