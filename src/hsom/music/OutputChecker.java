@@ -84,19 +84,27 @@ public class OutputChecker {
      */
     private int getPitch(float pitch){
 
-        int output = -1;
+        int outputValue = -1;
         int octave = 0, intPitch = 0;
         //determine the octave
-        float decimalValue = pitch - new Float(pitch).intValue();
-        if(decimalValue == 0.0){
+        int decimalValue = java.lang.Math.round((pitch - new Float(pitch).intValue()) *(float)10);
+        if(decimalValue == 0){
             intPitch = new Float(pitch).intValue();
             octave = 0;
         }
-        else if(decimalValue <= 0.5){
+        else if(decimalValue == 4){
+            intPitch = new Float(pitch).intValue();
+            octave = 2;
+        }
+        else if(decimalValue == 2){
             intPitch = new Float(pitch).intValue();
             octave = 1;
         }
-        else if(decimalValue > 0.5){
+        else if(decimalValue == 6){
+            intPitch = new Float(pitch).intValue() + 1;
+            octave = -2;
+        }
+        else if(decimalValue == 8){
             intPitch = new Float(pitch).intValue() + 1;
             octave = -1;
         }
@@ -105,26 +113,26 @@ public class OutputChecker {
             System.out.println("Unexpected pitch value in the input set");
         }
         switch(intPitch){
-            case 0: output = 1; break;
-            case 1: output = 8; break;
-            case 2: output = 3; break;
-            case 3: output = 10; break;
-            case 4: output = 5; break;
-            case 5: output = 0; break;
-            case 6: output = 7; break;
-            case 7: output = 2; break;
-            case 8: output = 9; break;
-            case 9: output = 4; break;
-            case 10: output = 11; break;
-            case 11: output = 6; break;
+            case 0: outputValue = 1; break;
+            case 1: outputValue = 8; break;
+            case 2: outputValue = 3; break;
+            case 3: outputValue = 10; break;
+            case 4: outputValue = 5; break;
+            case 5: outputValue = 0; break;
+            case 6: outputValue = 7; break;
+            case 7: outputValue = 2; break;
+            case 8: outputValue = 9; break;
+            case 9: outputValue = 4; break;
+            case 10: outputValue = 11; break;
+            case 11: outputValue = 6; break;
         }
         if(octave == 1){
-            output += 12;
+            outputValue += 12;
         }
         else if(octave == -1){
-            output -= 12;
+            outputValue -= 12;
         }
-        return output;
+        return outputValue;
     }
 
 

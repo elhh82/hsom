@@ -105,7 +105,30 @@
                 SOMVector<Float> curNodes = (SOMVector<Float>)in.elementAt(i);
                 MusicVector<Float> output = new MusicVector<Float>();
                 for(int j=0; j<curNodes.size(); j++){
-                    output.addElement(curNodes.elementAt(j)*range + min);
+                    float value = curNodes.elementAt(j)*range + min;
+                    //doing some manual rounding of the values predicted
+                    double leftSide = java.lang.Math.floor((double)value);
+                    double rightSide = value - leftSide;
+                    if(rightSide <= 0.1){
+                        rightSide = 0;
+                    }
+                    else if(rightSide <= 0.3){
+                        rightSide = 0.2;
+                    }
+                    else if(rightSide <= 0.5){
+                        rightSide = 0.4;
+                    }
+                    else if(rightSide >= 0.9){
+                        rightSide = 1;
+                    }
+                    else if(rightSide >= 0.7){
+                        rightSide = 2;
+                    }
+                    else if(rightSide > 0.5){
+                        rightSide = 0.6;
+                    }
+                    value = (float)(leftSide + rightSide);
+                    output.addElement(value);
                 }
                 outputBuffer.write("Prediction " + i + ": " + output.toString() + '\n');
 
