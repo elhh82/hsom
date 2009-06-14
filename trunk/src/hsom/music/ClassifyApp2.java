@@ -31,7 +31,7 @@ public class ClassifyApp2 {
         //durationTrainer = new SOMTrainer(durationMap, inputDuration);
         pitchOutput = new SOMOutput(pitchMap, inputPitch);
         durationOutput = new SOMOutput(durationMap, inputDuration);
-        joinMap = new SOMMap(40,40,8);
+        joinMap = new SOMMap(60,60,8);
         joinLinker = new SOMLinker(pitchOutput, durationOutput);
         joinTrainer = new SOMTrainer(joinMap, joinLinker);
         //joinOutput = new SOMOutput(joinMap, joinLinker);

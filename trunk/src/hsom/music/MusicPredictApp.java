@@ -45,7 +45,6 @@ public class MusicPredictApp {
     private void start(String outFile){
         //runs it once to get all the output values
         topOutput.start();
-
         //gets the prediction
         //bottomSOMPrediction(pitchOutput.getOutput(), outFile, true);
         //bottomSOMPrediction(durationOutput.getOutput(), outFile, true);
@@ -70,8 +69,10 @@ public class MusicPredictApp {
      */
     private void joinSOMPrediction(Vector joinOutput, String outFile){
         Vector[] joinPrediction = joinMusicMap.getJoinedLowerNodes(joinOutput);
-        predictPitch.revert(pitchMusicMap.getNodeContents(joinPrediction[0]),outFile);
-        predictDuration.revert(durationMusicMap.getNodeContents(joinPrediction[1]),outFile);
+        bottomSOMPrediction(joinPrediction[0],outFile, true);
+        bottomSOMPrediction(joinPrediction[1],outFile, false);
+        //predictPitch.revert(pitchMusicMap.getNodeContents(joinPrediction[0]),outFile);
+        //predictDuration.revert(durationMusicMap.getNodeContents(joinPrediction[1]),outFile);
     }
 
     /**

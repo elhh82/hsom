@@ -35,7 +35,7 @@ public class ABCConverter {
             String line[];
             FileWriter file;
             BufferedWriter outputBuffer;
-            int outputCount = 1;
+            int outputCount = 0;
             String outputHeader;
             int numLines = 0;
             //count how many total lines to read
@@ -51,12 +51,12 @@ public class ABCConverter {
             predictionReader.close();
             for(int i=0; i<numLines/2; i++){
                 outputHeader =  "% HSOM Predicted Output\n" +
-                                "X:1\nT:HSOM Prediction " +
+                                "X:1\nT:pred" +
                                 outputCount + "\n" +
-                                "Q:1/8=120\n"+
-                                "K:c\n";
+                                "Q:1/8=160\n"+
+                                "K:C\n"+"M:2/4\n";
 
-                file = new FileWriter(folder + "//output"+outputCount++ + ".abc");
+                file = new FileWriter(folder + "//pred"+outputCount++ + ".abc");
                 outputBuffer = new BufferedWriter(file);
                 String[] pitch = line[i].split(" ");
                 String[] duration = line[i+numLines/2].split(" ");
@@ -65,36 +65,38 @@ public class ABCConverter {
                 String[] pitchValues = pitch[2].substring(1,pitch[2].length()-1).split(",");
                 String[] durationValues = duration[2].substring(1,duration[2].length()-1).split(",");
                 
-                
+
+                boolean noteLengthError = false;
                 String melody = "";
                 for(int j=0; j<pitchValues.length; ){
                     //find the length of the note
                     int noteLength = 1;
-                    if(new Float(durationValues[j]).intValue() == 1){
+                    if(new Float(durationValues[j]).intValue() == 2){
                         for(int k=j+1; k<durationValues.length; k++){
                             float temp = new Float(durationValues[k]).intValue();
-                            if(temp == 1 || temp == -1) break;
+                            if(temp == 0 || temp == 2) break;
                             else noteLength++;
                         }
                     }
                     else{
                         for(int k=j+1; k<durationValues.length; k++){
                             float temp = new Float(durationValues[k]).intValue();
-                            if(temp == 1) break;
+                            if(temp == 2) break;
                             else noteLength++;
                         }
                     }
                     //find the pitch of the note
                     String note = getPitch(Float.parseFloat(pitchValues[j]));
-
                     switch(noteLength){
                         case 1: note = note + "1/2"; break;
                         case 2: break;
                         case 3: note = note + "3/2"; break;
                         case 4: note = note + "2"; break;
+                        case 5: note = note + "5/2"; break;
                         case 6: note = note + "3"; break;
                         case 8: note = note + "4"; break;
-                        default: System.out.println("Note length error " + noteLength);
+                        default: System.out.println("Note length error at output: " + i + "  Notelength of: " + noteLength); 
+                                 noteLengthError = true;
                     }               
                     melody = melody + " " + note;
                     j += noteLength;
@@ -105,8 +107,10 @@ public class ABCConverter {
                 }
                 //adds a double barline
                 melody = melody + "|" + "\n";
-                outputBuffer.write(outputHeader);
-                outputBuffer.write(melody);
+                if(!noteLengthError){
+                    outputBuffer.write(outputHeader);
+                    outputBuffer.write(melody);
+                }
                 outputBuffer.close();
                  
             }
