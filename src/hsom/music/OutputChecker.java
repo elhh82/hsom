@@ -135,7 +135,6 @@ public class OutputChecker {
         return outputValue;
     }
 
-
     /**
      * Returns the contour of the pitch string.
      * The contour is obtained by subtracting each pitch with the pitch before it.
@@ -172,7 +171,104 @@ public class OutputChecker {
             int modPitch = (getPitch(new Float(pitches[i]))+12)%12;
             histogram[modPitch]++;
         }
+        int pitchTotal = 0;
+        for(int i=0;i<12;i++){
+            pitchTotal += histogram[i];
+        }
+        if(pitchTotal != 64){
+            System.out.println(pitchTotal + " is not equal to 64.");
+        }
         return histogram;
+    }
+
+    /**
+     * builds a histogram of durations
+     */
+    public int[] buildDurationHistogram(String[] durations){
+
+        int histogram[] = new int[17];
+        for(int i=0; i<17; i++){
+            histogram[i] = 0;
+        }
+        for(int i=0;i<durations.length; i++){
+            int count = 0;
+            if(java.lang.Math.round(new Double(durations[i])) == 0){
+                histogram[0]++;
+            }
+            if(java.lang.Math.round(new Double(durations[i])) >= 2){
+                count++;
+                if(i<durations.length-1){
+                    i++;
+                    while(java.lang.Math.round(new Double(durations[i])) == 1){
+                        count++;
+                        if(i==durations.length-1){
+                            i++;
+                            break;
+                        }
+                        i++;
+                    }
+                    i--;
+                }
+                histogram[count]++;
+            }
+            
+        }
+        int total=0;
+        for(int i=0;i<17;i++){
+            if(i!=0){
+                total += i*histogram[i];
+            }
+            else{
+                total += histogram[i];
+            }
+        }
+        if(total!=64){
+            System.out.println("Error in duration histogram count");
+        }
+        return histogram;
+    }
+
+    /**
+     * Prints out the pitch histogram
+     * 
+     */
+    public void getPitchHistogram(){
+        String pitchOut[];
+        for(int i=0; i<output.length/2; i++){
+            String temp = output[i].split(" ")[2];
+            pitchOut = temp.substring(1,temp.length()-1).split(",");
+            //build the contour for the output pitch
+            int pitchOutHistogram[] = buildPitchHistogram(pitchOut);
+            System.out.print("Histogram-" + i + ": ");
+            for(int j=0; j<12; j++){
+                System.out.print(pitchOutHistogram[j]);
+                System.out.print(",");
+            }
+            System.out.println("");
+        }
+
+    }
+
+    /**
+     * Prints out the duration histogram
+     */
+       public void getDurationHistogram(){
+        String durationOut[];
+        System.out.println(output.length);
+        for(int i=output.length/2; i<output.length; i++){
+            String temp = output[i].split(" ")[2];
+            durationOut = temp.substring(1,temp.length()-1).split(",");
+            //build the contour for the output pitch
+            int durationOutHistogram[] = buildDurationHistogram(durationOut);
+            int tempVal=i-output.length/2;
+            System.out.print("Histogram-" + tempVal + ": ");
+            for(int j=0; j<17; j++){
+                System.out.print(durationOutHistogram[j]);
+                System.out.print(",");
+            }
+            System.out.println("");
+        }
+
     }
 
     /**
@@ -425,14 +521,16 @@ public class OutputChecker {
      */
     public static void main(String[] args){
         OutputChecker checker = new OutputChecker(args[0], args[1], args[2]);
-        System.out.println("Euclidean Analysis");
-        checker.fullCheckEuclidean();
-        System.out.println("-------------------------");
-        System.out.println("Contour Analysis");
-        checker.contourCheck();
-        System.out.println("-------------------------");
-        System.out.println("Histogram Analysis");
-        checker.histogramCheck();
+        //checker.getPitchHistogram();
+        checker.getDurationHistogram();
+        //System.out.println("Euclidean Analysis");
+        //checker.fullCheckEuclidean();
+        //System.out.println("-------------------------");
+        //System.out.println("Contour Analysis");
+        //checker.contourCheck();
+        //System.out.println("-------------------------");
+        //System.out.println("Histogram Analysis");
+        //checker.histogramCheck();
         //checker.lineByLineCheck();
         //checker.fullCheckPitch();
     }
